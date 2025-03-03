@@ -9,10 +9,13 @@ class Album(models.Model):
         ("unknown", "Unknown"),
         ("rock", "Rock"),
         ("musical", "Musical Theatre"),
-        ("metal", "Metal")
+        ("metal", "Metal"),
+        ("pop", "Pop"),
+        ("jazz", "Jazz"),
+        ("rap", "Rap")
     ]
     title = models.CharField(max_length = MAX_TITLE_LENGTH)
-    rating = models.FloatField(default = 0)
+    #rating = models.FloatField(default = 0)
     art = models.ImageField(upload_to = "album_covers", blank = True)
     uploader = models.ForeignKey("UserProfile", on_delete = models.CASCADE)
     upload_date = models.DateField(default = dt.date.today)
@@ -21,7 +24,7 @@ class Album(models.Model):
     slug = models.SlugField(unique = True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
+        self.slug = slugify(self.title)
         super(Album, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -30,10 +33,10 @@ class Album(models.Model):
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
     date_created = models.DateField(default = dt.date.today)
-    favourite_album = models.ForeignKey(Album, on_delete = models.CASCADE)
-    followers = models.IntegerField(default = 0)
-    following = models.IntegerField(default = 0)
-    liked_albums = models.ManyToManyField(Album)
+    favourite_album = models.ForeignKey(Album, on_delete = models.CASCADE, default = None, null = True, blank = True, related_name = "favourited_by")
+    #followers = models.IntegerField(default = 0)
+    #following = models.IntegerField(default = 0)
+    liked_albums = models.ManyToManyField(Album, related_name = "liked_by")
     users_followed = models.ManyToManyField("self", symmetrical = False)
 
     def __str__(self):
@@ -42,8 +45,8 @@ class UserProfile(models.Model):
 class Comment(models.Model):
     MAX_COMMENT_LENGTH = 255
     text = models.CharField(max_length = MAX_COMMENT_LENGTH)
-    username = models.ForeignKey(UserProfile)
-    album_id = models.ForeignKey(Album, on_delete = models.CASCADE)
+    user_profile = models.ForeignKey(UserProfile, on_delete = models.CASCADE)
+    album = models.ForeignKey(Album, on_delete = models.CASCADE)
     score = models.IntegerField(default = 0)
 
     def __str__(self):
