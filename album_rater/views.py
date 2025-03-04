@@ -52,7 +52,7 @@ def add_album(request):
         form = AlbumForm(request.POST)
 
         if form.is_valid():
-            form.save(commit = True)g
+            form.save(commit = True)
 
             #Redirect user back to the index view
             return redirect(reverse("album-rater:index"))
