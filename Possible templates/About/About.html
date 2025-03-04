@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <!-- Mobile Responsiveness -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About - MyAlbumRater</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" 
+  rel="stylesheet" 
+  integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" 
+  crossorigin="anonymous">
+    
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #f8f9fa;
+    }
+    /* Navbar styling with smooth link hover effects */
+    .navbar-nav .nav-link {
+      margin-right: 1rem;
+      transition: color 0.3s;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #007bff;
+    }
+    /* About Section styling */
+    .about-section {
+      margin: 2rem auto;
+    }
+    .about-card {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: none;
+      border-radius: 10px;
+    }
+    .about-title {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header with Navigation -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">MyAlbumRater</a>
+        <button 
+          class="navbar-toggler" 
+          type="button" 
+          data-bs-toggle="collapse" 
+          data-bs-target="#navbarNav" 
+          aria-controls="navbarNav" 
+          aria-expanded="false" 
+          aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Charts</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Search</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Log Out</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Profile</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="container about-section">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <div class="card about-card p-4">
+          <h2 class="about-title">About</h2>
+          <p><strong>Description of the Website:</strong></p>
+          <p>
+            Welcome to <em>MyAlbumRater</em>, a place where music lovers from all around the world can rate, review, and discover their favorite albums. We offer:
+          </p>
+          <ul>
+            <li>Real-time charts to see what’s currently trending</li>
+            <li>A powerful search engine to find albums by artists or genres</li>
+            <li>A user-friendly review system to express your thoughts on the latest releases</li>
+          </ul>
+          <p>
+            Whether you're a die-hard music aficionado or just browsing for new tunes, MyAlbumRater aims to make your experience both fun and informative. We hope you enjoy exploring new albums, connecting with fellow fans, and sharing your opinions with our growing community!
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script 
+  src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
+  integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" 
+  crossorigin="anonymous"></script>
+</body>
+</html>
