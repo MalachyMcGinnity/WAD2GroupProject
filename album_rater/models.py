@@ -2,6 +2,7 @@ from django.db import models
 import datetime as dt
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
+from django.utils.timezone import now
 
 class Album(models.Model):
     MAX_TITLE_LENGTH = 40
@@ -18,7 +19,7 @@ class Album(models.Model):
     #rating = models.FloatField(default = 0)
     art = models.ImageField(upload_to = "album_covers", blank = True)
     uploader = models.ForeignKey("UserProfile", on_delete = models.CASCADE)
-    upload_date = models.DateField(default = dt.date.today)
+    upload_date = models.DateField(default = now)
     views = models.IntegerField(default = 0)
     genre = models.CharField(max_length = 20, choices = GENRES, default = "unknown")
     slug = models.SlugField(unique = True)
@@ -32,7 +33,7 @@ class Album(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete = models.CASCADE)
-    date_created = models.DateField(default = dt.date.today)
+    date_created = models.DateField(default = now)
     favourite_album = models.ForeignKey(Album, on_delete = models.CASCADE, default = None, null = True, blank = True, related_name = "favourited_by")
     #followers = models.IntegerField(default = 0)
     #following = models.IntegerField(default = 0)

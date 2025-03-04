@@ -7,26 +7,33 @@ django.setup()
 
 from django.contrib.auth.models import User
 from album_rater.models import Album, UserProfile, Comment
+from django.utils.timezone import now
 
-def add_album(title, uploader, upload_date = dt.date.today, views = 0, genre = "unknown"):
-    a = Album.objects.get_or_create(title = title, uploader = uploader)[0]
-    a.upload_date = upload_date
-    a.views = views
-    a.genre = genre
-    a.save()
+def add_album(title, uploader, upload_date = now(), views = 0, genre = "unknown"):
+    a, created = Album.objects.get_or_create(title = title, uploader = uploader)
+    if created:
+        a.upload_date = upload_date
+        a.views = views
+        a.genre = genre
+        a.save()
     return a
 
-def add_user_profile(username, password, date_created = dt.date.today):
-    user = User.objects.create_user(username = username, password = password)
-    up = UserProfile.objects.get_or_create(user = user)[0]
-    up.date_created = date_created
-    up.save()
+def add_user_profile(username, password, date_created = now()):
+    user, created = User.objects.get_or_create(username = username)
+    if created:
+        user.password = password
+        user.save()
+    up, created = UserProfile.objects.get_or_create(user = user)
+    if created:
+        up.date_created = date_created
+        up.save()
     return up
 
 def add_comment(text, user_profile, album, score = 0):
-    c = Comment.objects.get_or_create(text = text, user_profile = user_profile, album = album)[0]
-    c.score = score
-    c.save()
+    c, created = Comment.objects.get_or_create(text = text, user_profile = user_profile, album = album)
+    if created:
+        c.score = score
+        c.save()
     return c
 
 def populate():
