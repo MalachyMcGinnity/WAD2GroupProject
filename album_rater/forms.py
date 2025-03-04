@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class AlbumForm(forms.ModelForm):
     title = forms.CharField(label = "Album Title", max_length = Album.MAX_TITLE_LENGTH, help_text = "Please enter album title")
-    image = forms.ImageField(label = "Album Cover")
+    art = forms.ImageField(label = "Album Cover")
     genre = forms.ChoiceField(label = "Music Genre", choices = Album.GENRES, help_text = "Please enter music genre")
 
     class Meta:
