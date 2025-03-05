@@ -3,7 +3,7 @@
 <html>
     <head></head>
     <body>
-        <form id = "user_form", method = "post", action = "{% url 'album-rater:index' %}", enctype = "multipart/form-data">
+        <form id = "user_form", method = "post", action = "{{ file }}", enctype = "multipart/form-data">
             {% csrf_token %}
 
             <!-- Dispslay each form -->

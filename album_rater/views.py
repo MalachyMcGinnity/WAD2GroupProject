@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.urls import reverse
 from album_rater.forms import UserForm, UserProfileForm, AlbumForm
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 def test_register(request):
@@ -41,10 +42,9 @@ def test_register(request):
         profile_form = UserProfileForm()
     
     #Render with context
-    context_dict = {"forms": [user_form, profile_form]}
+    context_dict = {"forms": [user_form, profile_form], "file": reverse("album-rater:register")}
     return render(request, "album_rater/test_form.html", context_dict)
 
-@login_required
 def add_album(request):
     form = AlbumForm()
 
@@ -52,7 +52,14 @@ def add_album(request):
         form = AlbumForm(request.POST)
 
         if form.is_valid():
-            form.save(commit = True)
+            album = form.save()
+
+            if "art" in request.FILES:
+                album.art = request.FILES["art"]
+            print(User.objects.get(username = "josh"))
+            album.uploader = User.objects.get(username = "josh")
+
+            album.save()
 
             #Redirect user back to the index view
             return redirect(reverse("album-rater:index"))
@@ -60,7 +67,7 @@ def add_album(request):
             #Invalid
             print(form.errors)
     # Will handle the bad form, new form, or no form supplied cases.
-    return render(request, "album_rater/test_form.html", {"forms": [form]})
+    return render(request, "album_rater/test_form.html", {"forms": [form], "file": reverse("album-rater:create-album")})
 
 def index(request):
     return render(request, "album_rater/index.html")
