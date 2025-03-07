@@ -4,12 +4,12 @@ from django.contrib.auth.models import User
 
 class AlbumForm(forms.ModelForm):
     title = forms.CharField(label = "Album Title", max_length = Album.MAX_TITLE_LENGTH, help_text = "Please enter album title")
-    art = forms.ImageField(label = "Album Cover")
+    art = forms.ImageField(label = "Album Cover", required = False)
     genre = forms.ChoiceField(label = "Music Genre", choices = Album.GENRES, help_text = "Please enter music genre")
 
     class Meta:
         model = Album
-        fields = ("title", "art", "genre", )
+        fields = ("title", "art", "genre", "uploader")
 
 class UserForm(forms.ModelForm):
     username = forms.CharField(label = "Username")
