@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html>
+    <head lang="en">
+        <meta charset="UTf-8"/>
+        <title>
+            {% if user.is_authenticated %}
+            <a href="{% url 'album_rater:home' %}">Album Rater</a> <a href="{% url 'album_rater:home' %}">Log Out</a> <a href="{% url 'album_rater:home' %}">Profile</a>
+            {% else %}
+            <a href="{% url 'album_rater:home' %}">Album Rater</a> <a href="{% url 'album_rater:home' %}">Log In</a> <a href="{% url 'album_rater:home' %}">Sign Up</a>
+        </title>
+    </head>
+
+    <body>
+        <div>
+        {% block body_block %}
+        {% endblock %}
+        </div>
+        {% block bottom_block %}
+        {% endblock % }
+    </body>
+</html>
