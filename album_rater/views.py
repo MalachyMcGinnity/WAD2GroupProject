@@ -136,3 +136,6 @@ def user_delete_account(request):
 
     return render(request, 'delete_account.html')
 
+
+def about(request):
+    return render(request, 'album_rater/about.html')
