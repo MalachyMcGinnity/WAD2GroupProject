@@ -7,6 +7,8 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from datetime import datetime
 
 def index(request):
@@ -57,7 +59,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request,
-                  'WAD2GroupProject/SignUp.html',
+                  'album_rater/SignUp.html',
                   context={'user_form': user_form,
                            'profile_form': profile_form,
                            'registered': registered})
@@ -76,7 +78,7 @@ def user_login(request):
             if user.is_active:
 
                 login(request, user)
-                return redirect(reverse('WAD2GroupProject:index'))
+                return redirect(reverse('album_rater:index'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -85,12 +87,55 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
 
-        return render(request, 'WAD2GroupProject/login.html')
+        return render(request, 'album_rater/login.html')
     
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('WAD2GroupProject:index'))
+    return redirect(reverse('album_rater:index'))
+
+@login_required
+def user_change_password(request):
+    if request.method == 'POST':
+        new_password = request.POST.get('newPassword')
+        confirm_password = request.POST.get('confirmNewPassword')
+
+        if new_password and confirm_password:
+            if new_password == confirm_password:
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, "Your password has been updated.")
+                return redirect('album_rater:index')
+            else:
+                messages.error(request, "Passwords do not match, please try again.")
+        else:
+            messages.error(request, "Please fill in all fields.")
+
+    return render(request, 'change_password.html')
+
+@login_required
+def user_delete_account(request):
+    if request.method == 'POST':
+        confirm_username = request.POST.get('confirmUsername')
+        password = request.POST.get('password')
+
+        if confirm_username != request.user.username:
+            messages.error(request, "The username doesn't mactch the account.")
+            return render(request, 'delete_account.html')
+        
+        user = authenticate(username=request.user.username, password=password)
+
+        if user:
+            user.delete()
+            logout(request)
+            messages.success(request, "Account deleted")
+            return redirect('album_rater:index')
+        else:
+            messages.error(request, "Password is incorrect")
+
+    return render(request, 'delete_account.html')
+
 
 def about(request):
     return render(request, 'album_rater/about.html')
