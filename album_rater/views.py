@@ -91,3 +91,6 @@ def user_login(request):
 def user_logout(request):
     logout(request)
     return redirect(reverse('WAD2GroupProject:index'))
+
+def about(request):
+    return render(request, 'album_rater/about.html')
