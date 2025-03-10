@@ -57,7 +57,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request,
-                  'WAD2GroupProject/SignUp.html',
+                  'album_rater/SignUp.html',
                   context={'user_form': user_form,
                            'profile_form': profile_form,
                            'registered': registered})
@@ -76,7 +76,7 @@ def user_login(request):
             if user.is_active:
 
                 login(request, user)
-                return redirect(reverse('WAD2GroupProject:index'))
+                return redirect(reverse('album_rater:index'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -90,4 +90,4 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('WAD2GroupProject:index'))
+    return redirect(reverse('album_rater:index'))
