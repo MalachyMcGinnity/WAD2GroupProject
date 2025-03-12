@@ -1,0 +1,13 @@
+/* Global styles */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: #f4f7f9;
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    color: #343a40;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
