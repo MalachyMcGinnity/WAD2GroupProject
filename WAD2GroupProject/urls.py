@@ -4,7 +4,6 @@ from django.urls import include
 from album_rater import views
 
 urlpatterns = [
-    path("", views.index, name = "index"),
-    path('admin/', admin.site.urls, name = "admin"),
-    path("album-rater/", include("album_rater.urls"))
+    path('', include('album_rater.urls')),
+    path('admin/', admin.site.urls),
 ]
