@@ -40,6 +40,7 @@ class UserProfile(models.Model):
     #following = models.IntegerField(default = 0)
     liked_albums = models.ManyToManyField(Album, related_name = "liked_by")
     users_followed = models.ManyToManyField("self", symmetrical = False)
+    picture = models.ImageField(upload_to='profile_pics', blank=True, null=True)
 
     def __str__(self):
         return self.user.username
