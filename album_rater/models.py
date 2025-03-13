@@ -52,3 +52,15 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.text
+    
+class Rating(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='ratings')
+    user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name='ratings')
+    rating_value = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('album', 'user_profile')
+
+    def __str__(self):
+        return f'{self.user_profile} rated {self.album} as {self.rating_value}'
