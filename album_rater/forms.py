@@ -6,6 +6,7 @@ class AlbumForm(forms.ModelForm):
     title = forms.CharField(label = "Album Title", max_length = Album.MAX_TITLE_LENGTH, help_text = "Please enter album title")
     art = forms.ImageField(label = "Album Cover", required = False)
     genre = forms.ChoiceField(label = "Music Genre", choices = Album.GENRES, help_text = "Please enter music genre")
+    description = forms.CharField(label="Description", widget=forms.Textarea, required=False, help_text="Enter album description")
 
     class Meta:
         model = Album

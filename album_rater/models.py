@@ -22,6 +22,7 @@ class Album(models.Model):
     upload_date = models.DateField(default = now)
     views = models.IntegerField(default = 0)
     genre = models.CharField(max_length = 20, choices = GENRES, default = "unknown")
+    description = models.TextField(blank=True)
     slug = models.SlugField(unique = True)
 
     def save(self, *args, **kwargs):
