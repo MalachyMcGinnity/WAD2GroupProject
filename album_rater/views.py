@@ -22,7 +22,7 @@ def index(request):
     visitor_cookie_handler(request)
     visits = request.session.get('visits', 1)
 
-    return render(request, 'index.html', context=context_dict)
+    return render(request, 'album_rater/index.html', context=context_dict)
 
 def register(request):
     registered = False
@@ -57,7 +57,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request,
-                  'WAD2GroupProject/SignUp.html',
+                  'album_rater/sign_up.html',
                   context={'user_form': user_form,
                            'profile_form': profile_form,
                            'registered': registered})
@@ -85,7 +85,7 @@ def user_login(request):
             return HttpResponse("Invalid login details supplied.")
     else:
 
-        return render(request, 'WAD2GroupProject/login.html')
+        return render(request, 'album_rater/log_in.html')
     
 @login_required
 def user_logout(request):
@@ -94,3 +94,30 @@ def user_logout(request):
 
 def about(request):
     return render(request, 'album_rater/about.html')
+
+def upload(request):
+    #stub view
+    return render(request, 'album_rater/upload.html')
+
+def delete_account(request):
+    #stub view
+    return render(request, 'album_rater/delete_account.html')
+
+def profile(request):
+    #stub view
+    return render(request, 'album_rater/profile.html')
+
+def album(request):
+    #stub view
+    return render(request, 'album_rater/album.html')
+
+def charts(request):
+    #stub view
+    return render(request, 'album_rater/search.html')
+
+def change_password(request):
+    #stub view
+    return render(request, 'album_rater/change_password.html')
+
+def visitor_cookie_handler(request):
+    pass
