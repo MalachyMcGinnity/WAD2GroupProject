@@ -1,6 +1,6 @@
 
 /* Center the Change Password and Delete card */
-.change-container .delete-container .login-container {
+.change-container .delete-container .login-container .signin-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,7 +9,7 @@
 }
 
 /* Change Password and Delete Card */
-.change-card .delete-card .login-card {
+.change-card .delete-card .login-card .signin-card {
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -18,7 +18,7 @@
     max-width: 400px;
 }
 
-.change-card .delete-card .login-card h4 {
+.change-card .delete-card .login-card .signin-card h4 {
     font-weight: 600;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -58,12 +58,12 @@
 }
 
 /* Footer Link */
-.change-footer .delete-footer .login-footer {
+.change-footer .delete-footer .login-footer .signin-footer {
     text-align: center;
     margin-top: 1rem;
 }
 
-.change-footer .delete-footer .login-footer a {
+.change-footer .delete-footer .login-footer .signin-footer a {
     color: #007bff;
     font-weight: 500;
 }
