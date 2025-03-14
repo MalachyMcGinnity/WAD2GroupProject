@@ -1,0 +1,104 @@
+/* Main Container */
+.container {
+    margin: 2rem auto;
+    max-width: 960px;
+}
+
+/* Album Cover Card */
+.album-cover {
+    height: 250px;
+    background: linear-gradient(135deg, #dee2e6, #ced4da);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+}
+
+/* Album Details */
+.album-details h3 {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.views-count {
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.album-info p {
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.album-info strong {
+    color: #007bff;
+}
+
+/* Section Title */
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 2rem 0 1.5rem;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 0.5rem;
+}
+
+.section-title h4 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.section-title button {
+    font-weight: 500;
+}
+
+/* Review Card */
+.review-card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.review-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.review-avatar {
+    width: 60px;
+    height: 60px;
+    background: #adb5bd;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+.review-content {
+    flex: 1;
+}
+
+.review-score {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #007bff;
+}
+
+.review-text {
+    font-size: 0.95rem;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.review-author {
+    font-size: 0.85rem;
+    color: #6c757d;
+}

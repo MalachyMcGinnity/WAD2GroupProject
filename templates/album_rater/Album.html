@@ -1,240 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'album_rater/base.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Album Details</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    <style>
-        /* Global Styles */
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-            color: #343a40;
-            margin: 0;
-            padding: 0;
-        }
+{% block title_block %}
+    <title>Album</title>
+    <link rel="stylesheet" type="text/css" href="album.css">
+{% endblock %}
 
-        a {
-            text-decoration: none;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .navbar-brand {
-            font-weight: 600;
-            font-size: 1.5rem;
-            color: #007bff;
-        }
-
-        .navbar-nav .nav-link {
-            font-weight: 500;
-            color: #555;
-            transition: color 0.3s;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #007bff;
-        }
-
-        /* Main Container */
-        .container {
-            margin: 2rem auto;
-            max-width: 960px;
-        }
-
-        /* Album Cover Card */
-        .album-cover {
-            height: 250px;
-            background: linear-gradient(135deg, #dee2e6, #ced4da);
-            border-radius: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-            font-size: 1.2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin-bottom: 1rem;
-        }
-
-        /* Album Details */
-        .album-details h3 {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .views-count {
-            font-size: 0.9rem;
-            color: #6c757d;
-        }
-
-        .album-info p {
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
-        }
-
-        .album-info strong {
-            color: #007bff;
-        }
-
-        /* Section Title */
-        .section-title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 2rem 0 1.5rem;
-            border-bottom: 2px solid #dee2e6;
-            padding-bottom: 0.5rem;
-        }
-
-        .section-title h4 {
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .section-title button {
-            font-weight: 500;
-        }
-
-        /* Review Card */
-        .review-card {
-            background-color: #ffffff;
-            border: none;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-        }
-
-        .review-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
-
-        .review-avatar {
-            width: 60px;
-            height: 60px;
-            background: #adb5bd;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-right: 1rem;
-        }
-
-        .review-content {
-            flex: 1;
-        }
-
-        .review-score {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: #007bff;
-        }
-
-        .review-text {
-            font-size: 0.95rem;
-            color: #495057;
-            margin-bottom: 0.5rem;
-        }
-
-        .review-author {
-            font-size: 0.85rem;
-            color: #6c757d;
-        }
-    </style>
-</head>
-
-<body>
-    <!-- Navbar -->
-    <header>
-        <nav class="navbar navbar-expand-lg">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="#">MyAlbumRater</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item"><a class="nav-link" href="#">Charts</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Log Out</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Profile</a></li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <!-- Main Container -->
-    <div class="container">
-        <div class="row">
-            <!-- Album Cover (Left) -->
-            <div class="col-md-4 mb-4">
-                <div class="album-cover">
-                    Album Cover
-                </div>
-            </div>
-            <!-- Album Details (Right) -->
-            <div class="col-md-8 album-details">
-                <div class="d-flex justify-content-between align-items-start">
-                    <h3>Album Name <small class="text-muted">- Released By</small></h3>
-                    <div class="views-count">
-                        Views: 00
-                    </div>
-                </div>
-                <div class="album-info mt-3">
-                    <p><strong>Score:</strong> ★★★★★</p>
-                    <p><strong>Genre:</strong> Example Genre</p>
-                    <p><strong>Release Date:</strong> Jan 1, 2025</p>
-                </div>
+{% block main_block %}
+<!-- Main Container -->
+<div class="container">
+    <div class="row">
+        <!-- Album Cover (Left) -->
+        <div class="col-md-4 mb-4">
+            <div class="album-cover">
+                Album Cover
             </div>
         </div>
-
-        <!-- Reviews Section -->
-        <div class="section-title">
-            <h4>Reviews</h4>
-            <button class="btn btn-primary">Add Review</button>
-        </div>
-
-        <!-- Review Cards -->
-        <div class="review-card d-flex">
-            <div class="review-avatar"></div>
-            <div class="review-content">
-                <p class="review-score">Score: ★★★★★</p>
-                <p class="review-text">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget fermentum massa. Donec eget
-                    velit sapien.
-                    Quisque non eros aliquet, convallis sapien eu, pretium nisl.
-                </p>
-                <p class="review-author">- User1</p>
+        <!-- Album Details (Right) -->
+        <div class="col-md-8 album-details">
+            <div class="d-flex justify-content-between align-items-start">
+                <h3>Album Name <small class="text-muted">- Released By</small></h3>
+                <div class="views-count">
+                    Views: 00
+                </div>
             </div>
-        </div>
-
-        <div class="review-card d-flex">
-            <div class="review-avatar"></div>
-            <div class="review-content">
-                <p class="review-score">Score: ★★★☆☆</p>
-                <p class="review-text">
-                    Another example review. Cras vestibulum interdum risus at sollicitudin.
-                </p>
-                <p class="review-author">- User2</p>
+            <div class="album-info mt-3">
+                <p><strong>Score:</strong> ★★★★★</p>
+                <p><strong>Genre:</strong> Example Genre</p>
+                <p><strong>Release Date:</strong> Jan 1, 2025</p>
             </div>
         </div>
     </div>
 
-    <!-- Bootstrap Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-</body>
+    <!-- Reviews Section -->
+    <div class="section-title">
+        <h4>Reviews</h4>
+        <button class="btn btn-primary">Add Review</button>
+    </div>
 
-</html>
+    <!-- Review Cards -->
+    <div class="review-card d-flex">
+        <div class="review-avatar"></div>
+        <div class="review-content">
+            <p class="review-score">Score: ★★★★★</p>
+            <p class="review-text">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget fermentum massa. Donec eget
+                velit sapien.
+                Quisque non eros aliquet, convallis sapien eu, pretium nisl.
+            </p>
+            <p class="review-author">- User1</p>
+        </div>
+    </div>
+
+    <div class="review-card d-flex">
+        <div class="review-avatar"></div>
+        <div class="review-content">
+            <p class="review-score">Score: ★★★☆☆</p>
+            <p class="review-text">
+                Another example review. Cras vestibulum interdum risus at sollicitudin.
+            </p>
+            <p class="review-author">- User2</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

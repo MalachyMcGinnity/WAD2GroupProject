@@ -1,0 +1,54 @@
+/* Center the delete account card */
+.delete-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 56px);
+    /* Adjust for navbar height */
+}
+
+/* Delete Account Card */
+.delete-card {
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.delete-card h4 {
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+/* Button Styling */
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Footer Link */
+.delete-footer {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.delete-footer a {
+    color: #007bff;
+    font-weight: 500;
+}
