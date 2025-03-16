@@ -1,0 +1,21 @@
+{% extends "album_rater/base.html" %}
+{% block title %}Delete Album - MyAlbumRater{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Delete Album</h4>
+            </div>
+            <div class="card-body">
+                <p>Are you sure you want to delete the album "<strong>{{ album.title }}</strong>"?</p>
+                <form method="post" action="{% url 'album_rater:delete_album' album_slug=album.slug %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger w-100">Delete Album</button>
+                    <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

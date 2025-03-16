@@ -1,74 +1,100 @@
 import os
 import datetime as dt
 import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WAD2GroupProject.settings')
+import random
+from django.core.files import File
 
+# === Constants for customizing database filling ===
+NUM_USERS = 8                   # Number of users
+ALBUMS_PER_USER = 5             # Number of albums per user
+COMMENTS_PER_ALBUM = 6          # Number of comments under each album
+# ===========================================================================
+
+# List of test images (used for both covers and avatars)
+TEST_PICTURES = ["TestPicture1.jpg", "TestPicture2.jpeg", "TestPicture3.jpg"]
+TEST_PICTURES_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "media", "TestPictures")
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'WAD2GroupProject.settings')
 django.setup()
 
 from django.contrib.auth.models import User
 from album_rater.models import Album, UserProfile, Comment
 from django.utils.timezone import now
 
-def add_album(title, uploader, upload_date = now(), views = 0, genre = "unknown"):
-    a, created = Album.objects.get_or_create(title = title, uploader = uploader)
+def add_album(title, uploader, upload_date=now(), views=0, genre="unknown"):
+    a, created = Album.objects.get_or_create(title=title, uploader=uploader)
     if created:
         a.upload_date = upload_date
         a.views = views
         a.genre = genre
+        # Select a picture from TEST_PICTURES cyclically
+        pic_filename = TEST_PICTURES[hash(title) % len(TEST_PICTURES)]
+        pic_path = os.path.join(TEST_PICTURES_PATH, pic_filename)
+        if os.path.exists(pic_path):
+            with open(pic_path, "rb") as f:
+                a.art.save(pic_filename, File(f), save=False)
         a.save()
     return a
 
-def add_user_profile(username, password, date_created = now()):
-    user, created = User.objects.get_or_create(username = username)
+def add_user_profile(username, password, date_created=now()):
+    user, created = User.objects.get_or_create(username=username)
     if created:
-        user.password = password
+        user.set_password(password)
         user.save()
-    up, created = UserProfile.objects.get_or_create(user = user)
+    up, created = UserProfile.objects.get_or_create(user=user)
     if created:
         up.date_created = date_created
+        # Assign avatar from TEST_PICTURES cyclically
+        pic_filename = TEST_PICTURES[hash(username) % len(TEST_PICTURES)]
+        pic_path = os.path.join(TEST_PICTURES_PATH, pic_filename)
+        if os.path.exists(pic_path):
+            with open(pic_path, "rb") as f:
+                up.picture.save(pic_filename, File(f), save=False)
         up.save()
     return up
 
-def add_comment(text, user_profile, album, score = 0):
-    c, created = Comment.objects.get_or_create(text = text, user_profile = user_profile, album = album)
+def add_comment(text, user_profile, album, score=0):
+    c, created = Comment.objects.get_or_create(text=text, user_profile=user_profile, album=album)
     if created:
         c.score = score
+        # Assign a random rating from 1 to 10
+        c.rating_value = random.randint(1, 10)
         c.save()
     return c
 
 def populate():
-    user_info = [("username0", "password"), ("username1", "password"), ("username2", "password"), ("username3", "password")]
+    # Create users
     users = []
-    for user in user_info:
-        users.append(add_user_profile(user[0], user[1]))
-    
-    album_titles = [("I Don't Know Albums", "rock"), ("Nonsense", "metal"), ("Lorem Ipsum", "rap"), ("Tha mi sgith", "jazz"),
-                    ("If you are reading this, good evening", "musical"), ("Tha mi an dochas gum bi sin sgoinneil", "pop"),
-                    ("Last one, I swear", "unknown"), ("Kendrick Lamar's 2025 Superbowl Half-Time Show", "rap")]
+    for i in range(NUM_USERS):
+        username = f"username{i}"
+        password = "password"
+        users.append(add_user_profile(username, password))
+
+    # Create albums: ALBUMS_PER_USER for each user
     albums = []
-    for i in range(len(album_titles)):
-        albums.append(add_album(album_titles[i][0], users[i%4], genre = album_titles[i][1]))
-    
-    for i in range(len(users)):
-        users[i].favourite_album = albums[(2*i + 3)%len(albums)]
+    genres = ["rock", "metal", "rap", "jazz", "musical", "pop", "unknown", "rap"]
+    for user in users:
+        for j in range(ALBUMS_PER_USER):
+            title = f"{user.user.username}'s Album {j+1}"
+            genre = genres[j % len(genres)]
+            album = add_album(title, user, genre=genre)
+            albums.append(album)
 
-        users[i].liked_albums.add(albums[(2*i + 3)%len(albums)])
-        users[i].liked_albums.add(albums[(i + 6)%len(albums)])
-        users[i].liked_albums.add(albums[(5*i + 1)%len(albums)])
-
-        users[i].users_followed.add(users[(3*i + 7)%len(users)])
-        users[i].users_followed.add(users[(4*i - 2)%len(users)])
-
-        users[i].save()
-    
-    user_messages = ["Great Job", "kinda mid", "According to all known laws of aviation...", "A MINOOOOOOOOR", "Honestly, it sucks",
-                     "Gotta love this artists work", "Did you know that Barack Obama is (as of 2025-03-03) the only US President to serve there term under the same flag they were born under?",
-                     "Ma tha sin deiseil a-nochd, bidh oidhche mhath agam."]
-    comments = []
-    for i in range(len(users)):
-        for j in range(len(users)):
-            comments.append(add_comment(user_messages[(len(users)*i + j)%len(user_messages)], users[i], albums[j]))
+    # For each album, create COMMENTS_PER_ALBUM comments from users (not the creator)
+    user_messages = [
+        "Great Job", "kinda mid", "According to all known laws of aviation...",
+        "A MINOOOOOOOOR", "Honestly, it sucks", "Gotta love this artist's work",
+        "Did you know that Barack Obama is the only US President to serve their term under the same flag they were born under?",
+        "Ma tha sin deiseil a-nochd, bidh oidhche mhath agam."
+    ]
+    for album in albums:
+        for i in range(COMMENTS_PER_ALBUM):
+            commenters = [u for u in users if u != album.uploader]
+            if commenters:
+                user_profile = commenters[i % len(commenters)]
+                text = user_messages[i % len(user_messages)]
+                add_comment(text, user_profile, album)
 
 if __name__ == "__main__":
-    print("Starting Album Rater popultaion script...")
+    print("Starting Album Rater population script...")
     populate()

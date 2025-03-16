@@ -1,24 +1,24 @@
 {% extends "album_rater/base.html" %}
-{% block title %}Upload Album - MyAlbumRater{% endblock %}
+{% block title %}Edit Album - MyAlbumRater{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Upload a New Album</h4>
+                <h4 class="mb-0">Edit Album</h4>
             </div>
             <div class="card-body">
-                <form method="post" action="{% url 'album_rater:album_create' %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'album_rater:edit_album' album_slug=album.slug %}" enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="id_title" class="form-label">Album Title</label>
                         {{ form.title }}
-                        <div class="form-text">Enter the title of your album.</div>
+                        <div class="form-text">Enter the new title of your album.</div>
                     </div>
                     <div class="mb-3">
                         <label for="id_art" class="form-label">Album Cover</label>
                         {{ form.art }}
-                        <div class="form-text">Optional: Upload an album cover image.</div>
+                        <div class="form-text">Optional: Upload a new album cover image.</div>
                     </div>
                     <div class="mb-3">
                         <label for="id_genre" class="form-label">Music Genre</label>
@@ -28,7 +28,7 @@
                         <label for="id_description" class="form-label">Description</label>
                         {{ form.description }}
                     </div>
-                    <button type="submit" class="btn btn-success w-100">Upload Album</button>
+                    <button type="submit" class="btn btn-success w-100">Update Album</button>
                 </form>
             </div>
         </div>
