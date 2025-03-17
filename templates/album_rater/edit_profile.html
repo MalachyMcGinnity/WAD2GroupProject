@@ -1,0 +1,29 @@
+{% extends "album_rater/base.html" %}
+{% block title %}Edit Profile - MyAlbumRater{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Edit Your Profile</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'album_rater:edit_profile' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_bio" class="form-label">Profile Description</label>
+                        {{ form.bio }}
+                        <div class="form-text">Tell us about yourself.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id_picture" class="form-label">Profile Picture</label>
+                        {{ form.picture }}
+                        <div class="form-text">Optional: Upload a new profile picture.</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
