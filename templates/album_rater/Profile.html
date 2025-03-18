@@ -1,8 +1,9 @@
 {% extends 'album_rater/base.html' %}
+{% load static %}
 
 {% block title_block %}
     <title>Profile</title>
-    <link rel="stylesheet" type="text/css" href="profile.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
 {% endblock %}
 
 {% block main_block %}

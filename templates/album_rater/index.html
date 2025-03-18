@@ -1,8 +1,9 @@
 {% extends 'album_rater/base.html' %}
+{% load static %}
 
 {% block title_block %}
     <title>Index</title>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
 {% endblock %}
 
 {% block main_block %}
@@ -11,7 +12,7 @@
     <!-- Welcome & Upload -->
     <div class="welcome-section">
         <h2>Welcome, {{ user.username }}</h2>
-        <button class="btn btn-primary" id="create_album_button">Upload Album</button>
+        <button class="btn btn-primary" id="create_album_button" data-url="{% url 'album-rater:upload' %}">Upload Album</button>
     </div>
 
     <!-- Most Popular Albums -->
@@ -28,42 +29,11 @@
                         <a href = "{% url 'album-rater:album' album.slug %}">{{ album.title }}</a>
                     </div>
                     <div class="album-info">
-                        {{ album.user.username }}
+                        {{ album.uploader.user.username }}
                     </div>
                 </div>
             </div>
             {% endfor %}
-            
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 2</div>
-                    <div class="album-info">User2</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 3</div>
-                    <div class="album-info">User3</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 4</div>
-                    <div class="album-info">User4</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 5</div>
-                    <div class="album-info">User5</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 6</div>
-                    <div class="album-info">User6</div>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -167,5 +137,5 @@
     <a href="{% url 'album-rater:about' %}">About</a>
 </footer>
 
-<script src="album_rater/index.js"></script>
+<script src="{% static 'js/index.js' %}"></script>
 {% endblock %}

@@ -1,8 +1,9 @@
 {% extends 'album_rater/base.html' %}
+{% load static %}
 
 {% block title_block %}
     <title>Album</title>
-    <link rel="stylesheet" type="text/css" href="album.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/album.css' %}">
 {% endblock %}
 
 {% block main_block %}
@@ -20,7 +21,7 @@
         <!-- Album Details (Right) -->
         <div class="col-md-8 album-details">
             <div class="d-flex justify-content-between align-items-start">
-                <h3>{{ album.title }}<small class="text-muted"> - Released By</small> {{ album.user.username }}</h3>
+                <h3>{{ album.title }}<small class="text-muted"> - Released By</small> {{ album.uploader.user.username }}</h3>
                 <div class="views-count">
                     Views: {{ album.views }}
                 </div>

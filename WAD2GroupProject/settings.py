@@ -5,8 +5,10 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 MEDIA_DIR = os.path.join(BASE_DIR, "media")
+STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = MEDIA_DIR
+STATIC_ROOT = STATIC_DIR
 
 
 # Quick-start development settings - unsuitable for production
@@ -59,6 +61,10 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+STATICFILE_DIRS = [
+    STATIC_DIR
 ]
 
 WSGI_APPLICATION = 'WAD2GroupProject.wsgi.application'
