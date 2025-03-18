@@ -1,0 +1,25 @@
+{% extends 'album_rater/base.html' %}
+
+{% block title_block %}
+    <title>Upload Album</title>
+    <link rel="stylesheet" type="text/css" href="log_in.css">
+{% endblock %}
+    
+        
+
+{% block main_block %}
+<!-- Sign In Form -->
+<div class="signin-container">
+    <div class="signin-card">
+        <h4>Sign Up</h4>
+        <form id = "user_form" method = "post" action = "{% url 'album-rater:register' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+
+            <input type =  "submit" name = "submit" value = "Register"/>
+        </form>
+    </div>
+</div>
+{% endblock %}

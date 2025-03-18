@@ -11,16 +11,13 @@
 <div class="login-container">
     <div class="login-card">
         <h4>Log In</h4>
-        <form>
-            <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="username" placeholder="Enter username">
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Enter password">
-            </div>
-            <button type="submit" class="btn btn-primary">Log In</button>
+        <form id="log_in" method = "post" action = "{% url 'album-rater:log_in' %}">
+            {% csrf_token %}
+            Username: <input type="text" name="username" value="" size="50" />
+            <br />
+            Password: <input type="password" name="password" value="" size="50" />
+            <br />
+            <input type="submit" value="submit" />
         </form>
         <div class="login-footer">
             <p>Don't have an account? <a href="{% url 'album-rater:register' %}">Sign Up</a></p>

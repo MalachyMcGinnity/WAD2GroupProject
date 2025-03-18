@@ -12,7 +12,7 @@ class AlbumForm(forms.ModelForm):
         fields = ("title", "art", "genre", "uploader")
 
 class UserForm(forms.ModelForm):
-    username = forms.CharField(label = "Username")
+    #username = forms.CharField(label = "Username")
     password = forms.CharField(label = "Password", widget = forms.PasswordInput())
 
     class Meta:

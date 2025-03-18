@@ -4,6 +4,7 @@ from album_rater.models import Album, UserProfile, Comment
 from album_rater.forms import AlbumForm, UserForm, UserProfileForm, CommentForm
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -30,22 +31,18 @@ def register(request):
     if request.method == 'POST':
 
         user_form = UserForm(request.POST)
-        profile_form = UserProfileForm(request.POST, request.FILES)
-
+        profile_form = UserProfileForm(request.POST)
 
         if user_form.is_valid() and profile_form.is_valid():
-
             user = user_form.save()
-
-
             user.set_password(user.password)
             user.save()
 
             profile = profile_form.save(commit=False)
             profile.user = user
 
-            if 'picture' in request.FILES:
-                profile.picture = request.FILES['picture']
+            #if 'picture' in request.FILES:
+                #profile.picture = request.FILES['picture']
 
             profile.save()
 
@@ -57,7 +54,7 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render(request,
-                  'album_rater/sign_up.html',
+                  'album_rater/register.html',
                   context={'user_form': user_form,
                            'profile_form': profile_form,
                            'registered': registered})
@@ -76,7 +73,7 @@ def user_login(request):
             if user.is_active:
 
                 login(request, user)
-                return redirect(reverse('WAD2GroupProject:index'))
+                return redirect(reverse('album-rater:index'))
             else:
                 return HttpResponse("Your account is disabled.")
         else:
@@ -90,7 +87,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('WAD2GroupProject:index'))
+    return redirect(reverse('album_rater:index'))
 
 def about(request):
     return render(request, 'album_rater/about.html')
@@ -100,8 +97,25 @@ def upload(request):
     return render(request, 'album_rater/upload.html')
 
 def delete_account(request):
-    #stub view
-    return render(request, 'album_rater/delete_account.html')
+    if request.method == 'POST':
+        confirm_username = request.POST.get('confirmUsername')
+        password = request.POST.get('password')
+
+        if confirm_username != request.user.username:
+            messages.error(request, "The username doesn't mactch the account.")
+            return render(request, 'delete_account.html')
+        
+        user = authenticate(username=request.user.username, password=password)
+
+        if user:
+            user.delete()
+            logout(request)
+            messages.success(request, "Account deleted")
+            return redirect('album_rater:index')
+        else:
+            messages.error(request, "Password is incorrect")
+
+    return render(request, 'delete_account.html')
 
 def profile(request):
     #stub view
@@ -115,9 +129,25 @@ def charts(request):
     #stub view
     return render(request, 'album_rater/search.html')
 
+@login_required
 def change_password(request):
-    #stub view
-    return render(request, 'album_rater/change_password.html')
+    if request.method == 'POST':
+        new_password = request.POST.get('newPassword')
+        confirm_password = request.POST.get('confirmNewPassword')
+
+        if new_password and confirm_password:
+            if new_password == confirm_password:
+                request.user.set_password(new_password)
+                request.user.save()
+                update_session_auth_hash(request, request.user)
+                messages.success(request, "Your password has been updated.")
+                return redirect('album_rater:index')
+            else:
+                messages.error(request, "Passwords do not match, please try again.")
+        else:
+            messages.error(request, "Please fill in all fields.")
+
+    return render(request, 'change_password.html')
 
 def visitor_cookie_handler(request):
     pass
