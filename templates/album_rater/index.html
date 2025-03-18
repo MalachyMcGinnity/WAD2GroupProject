@@ -10,8 +10,8 @@
 <div class="container my-4">
     <!-- Welcome & Upload -->
     <div class="welcome-section">
-        <h2>Welcome, Username</h2>
-        <button class="btn btn-primary">Upload Album</button>
+        <h2>Welcome, {{ user.username }}</h2>
+        <button class="btn btn-primary" id="create_album_button">Upload Album</button>
     </div>
 
     <!-- Most Popular Albums -->
@@ -21,12 +21,19 @@
             <a href="#">Full List</a>
         </div>
         <div class="row g-3">
+            {% for album in popular_albums %}
             <div class="col-6 col-sm-4 col-md-2">
                 <div class="album-card">
-                    <div class="album-cover">Album 1</div>
-                    <div class="album-info">User1</div>
+                    <div class="album-cover">
+                        <a href = "{% url 'album-rater:album' album.slug %}">{{ album.title }}</a>
+                    </div>
+                    <div class="album-info">
+                        {{ album.user.username }}
+                    </div>
                 </div>
             </div>
+            {% endfor %}
+            
             <div class="col-6 col-sm-4 col-md-2">
                 <div class="album-card">
                     <div class="album-cover">Album 2</div>
@@ -159,4 +166,6 @@
 <footer>
     <a href="{% url 'album-rater:about' %}">About</a>
 </footer>
+
+<script src="album_rater/index.js"></script>
 {% endblock %}

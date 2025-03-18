@@ -10,31 +10,33 @@
 <div class="container">
     <div class="row">
         <!-- Album Cover (Left) -->
+        {% if album.art %}
         <div class="col-md-4 mb-4">
             <div class="album-cover">
-                Album Cover
+                <img src="{{ MEDIA_URL }}album_covers/{{ album.slug }}" alt="Album Cover" />
             </div>
         </div>
+        {% endif %}
         <!-- Album Details (Right) -->
         <div class="col-md-8 album-details">
             <div class="d-flex justify-content-between align-items-start">
-                <h3>Album Name <small class="text-muted">- Released By</small></h3>
+                <h3>{{ album.title }}<small class="text-muted"> - Released By</small> {{ album.user.username }}</h3>
                 <div class="views-count">
-                    Views: 00
+                    Views: {{ album.views }}
                 </div>
             </div>
             <div class="album-info mt-3">
-                <p><strong>Score:</strong> ★★★★★</p>
-                <p><strong>Genre:</strong> Example Genre</p>
-                <p><strong>Release Date:</strong> Jan 1, 2025</p>
+                <p><strong>Score:</strong> {{ score }}/5.0</p>
+                <p><strong>Genre:</strong> {{ genre }}</p>
+                <p><strong>Release Date:</strong> {{ date }}</p>
             </div>
         </div>
     </div>
 
     <!-- Reviews Section -->
     <div class="section-title">
-        <h4>Reviews</h4>
-        <button class="btn btn-primary">Add Review</button>
+        <h4>Comments</h4>
+        <button class="btn btn-primary">Add Comment</button>
     </div>
 
     <!-- Review Cards -->

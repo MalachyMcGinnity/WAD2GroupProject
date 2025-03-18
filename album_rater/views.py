@@ -19,6 +19,7 @@ def index(request):
     context_dict['albums'] = album_list
     context_dict['userprofiles'] = user_profile_list
     context_dict['comments'] = comment_list
+    context_dict["popular_albums"] = album_list.order_by("-views")[:5]
 
     visitor_cookie_handler(request)
     visits = request.session.get('visits', 1)
@@ -125,9 +126,15 @@ def profile(request, username_slug):
     context_dict = {"username": username_slug}
     return render(request, 'album_rater/profile.html')
 
-def album(request):
+def album(request, album_name):
     #stub view
-    return render(request, 'album_rater/album.html')
+    context_dict = {"album": Album.objects.get(slug = album_name)}
+    comments = Comment.objects.filter(album = context_dict["album"])
+    context_dict["score"] = round(0 if len(comments) == 0 else sum(comment.score for comment in comments)/len(comments), 1)
+    context_dict["comments"] = comments
+    context_dict["genre"] = context_dict["album"].get_genre_display()
+    context_dict["date"] = context_dict["album"].upload_date.strftime("%B %d, %Y")
+    return render(request, 'album_rater/album.html', context = context_dict)
 
 def charts(request):
     #stub view
