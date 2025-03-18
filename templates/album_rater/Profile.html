@@ -19,7 +19,9 @@
                 <div class="col-md-8 user-info">
                     <div class="d-flex align-items-center mb-2">
                         <h4 class="mb-0 me-3">Username</h4>
+                        {% if user.username != username %}
                         <button class="btn btn-primary btn-sm">Follow</button>
+                        {% endif %}
                     </div>
                     <h5>About</h5>
                     <p>

@@ -47,6 +47,9 @@ def register(request):
             profile.save()
 
             registered = True
+
+            login(request, user)
+            return redirect(reverse("album-rater:index"))
         else:
             print(user_form.errors, profile_form.errors)
     else:
@@ -87,7 +90,7 @@ def user_login(request):
 @login_required
 def user_logout(request):
     logout(request)
-    return redirect(reverse('album_rater:index'))
+    return redirect(reverse('album-rater:index'))
 
 def about(request):
     return render(request, 'album_rater/about.html')
@@ -111,14 +114,15 @@ def delete_account(request):
             user.delete()
             logout(request)
             messages.success(request, "Account deleted")
-            return redirect('album_rater:index')
+            return redirect('album-rater:index')
         else:
             messages.error(request, "Password is incorrect")
 
     return render(request, 'delete_account.html')
 
-def profile(request):
+def profile(request, username_slug):
     #stub view
+    context_dict = {"username": username_slug}
     return render(request, 'album_rater/profile.html')
 
 def album(request):

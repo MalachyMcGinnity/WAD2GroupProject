@@ -33,7 +33,7 @@
                         <li class="nav-item"><a class="nav-link" href="#">Search</a></li>
                         {% if user.is_authenticated %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'album-rater:log_out' %}">Log Out</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'album-rater:user_profile'}">Profile</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{% url 'album-rater:user_profile' user.username %}">Profile</a></li>
                         {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'album-rater:log_in' %}">Log In</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'album-rater:register' %}">Sign Up</a></li>
