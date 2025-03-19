@@ -33,12 +33,18 @@
             </div>
         </div>
         <!-- Right: Favourite Album -->
+        {% if favourite %}
         <div class="col-lg-4 text-center">
             <h5>Favourite Album</h5>
-            <div class="album-cover-placeholder mb-2">Cover</div>
-            <p class="mb-1"><strong>Album:</strong> Album Title</p>
-            <p><strong>By User:</strong> CreatorName</p>
+            {% if favourite.art %}
+            <div class="album-cover-placeholder mb-2">
+                <img src="{{MEDIA_URL}}album_rater/{{ favourite.slug }}" alt="Album Cover"/>
+            </div>
+            {% endif %}
+            <p class="mb-1"><strong>Album:</strong> {{ favourite.title }}</p>
+            <p><strong>By User:</strong> {{ favourite.uploader }}</p>
         </div>
+        {% endif %}
     </div>
 
     <!-- Uploaded Albums Section -->

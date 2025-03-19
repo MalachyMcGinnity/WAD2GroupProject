@@ -1,0 +1,16 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/album_card.css' %}">
+
+<div class="card">
+    <div class="album-card">
+        {% if album.art %}
+        <div class="album-cover">
+            <img src="{{ album.art.url }}" class="card-img-top img-fluid" alt="{{ album.title }} Cover">
+        </div>
+        {% endif %}
+        <div class="album-info">
+            <a href = "{% url 'album-rater:album' album.slug %}" class="album-title">{{ album.title }}</a><br />
+            <a href = "{% url 'album-rater:user_profile' album.uploader.slug %}" class="album-uploader">{{ album.uploader.user.username }}</a>
+        </div>
+    </div>
+</div>

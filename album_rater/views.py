@@ -139,9 +139,12 @@ def delete_account(request):
     return render(request, 'delete_account.html')
 
 def profile(request, username_slug):
-    #stub view
+    user = UserProfile.objects.get(slug = username_slug)
     context_dict = {"username": username_slug}
-    return render(request, 'album_rater/profile.html')
+    context_dict["ex_albums"] = Album.objects.filter(uploader = user)[:3]
+    context_dict["rated_albums"] = user.liked_albums.all()[:3]
+    context_dict["favourite"] = user.favourite_album
+    return render(request, 'album_rater/profile.html', context = context_dict)
 
 def album(request, album_name):
     #stub view

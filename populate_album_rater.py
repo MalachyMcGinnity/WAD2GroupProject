@@ -44,7 +44,7 @@ def populate():
     
     album_titles = [("I Don't Know Albums", "rock"), ("Nonsense", "metal"), ("Lorem Ipsum", "rap"), ("Tha mi sgith", "jazz"),
                     ("If you are reading this, good evening", "musical"), ("Tha mi an dochas gum bi sin sgoinneil", "pop"),
-                    ("Last one, I swear", "unknown"), ("Kendrick Lamar's 2025 Superbowl Half-Time Show", "rap")]
+                    ("Last one, I swear", "unknown"), ("Kendrick Lamar's 2025 Superbowl Half-Ti", "rap")]
     albums = []
     for i in range(len(album_titles)):
         albums.append(add_album(album_titles[i][0], users[i%4], genre = album_titles[i][1]))

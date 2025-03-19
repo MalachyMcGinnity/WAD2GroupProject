@@ -11,8 +11,8 @@ urlpatterns = [
     path('account/log_out/',views.user_logout,name="log_out"),
     path('upload/',views.upload,name="upload"),
     path('account/delete_account/',views.delete_account,name="delete_account"),
-    path('profile/<slug:username_slug>',views.profile,name="user_profile"),
-    path('album/<slug:album_name>',views.album,name="album"),
+    path('profile/<slug:username_slug>/',views.profile,name="user_profile"),
+    path('album/<slug:album_name>/',views.album,name="album"),
     path('charts/',views.charts,name="charts"),
     path('change_password',views.change_password,name="change_password"),
 ]

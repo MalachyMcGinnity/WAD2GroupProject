@@ -37,8 +37,13 @@ class UserProfile(models.Model):
     favourite_album = models.ForeignKey(Album, on_delete = models.CASCADE, default = None, null = True, blank = True, related_name = "favourited_by")
     #followers = models.IntegerField(default = 0)
     #following = models.IntegerField(default = 0)
-    liked_albums = models.ManyToManyField(Album, related_name = "liked_by")
-    users_followed = models.ManyToManyField("self", symmetrical = False)
+    liked_albums = models.ManyToManyField(Album, related_name = "liked_by", blank = True)
+    users_followed = models.ManyToManyField("self", symmetrical = False,  blank = True)
+    slug = models.SlugField(unique = True, default = "")
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.user.username)
+        super(UserProfile, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.user.username
