@@ -11,8 +11,12 @@
 <div class="container my-4">
     <!-- Welcome & Upload -->
     <div class="welcome-section">
+        {% if user.is_authenticated %}
         <h2>Welcome, {{ user.username }}</h2>
         <button class="btn btn-primary" id="create_album_button" data-url="{% url 'album-rater:upload' %}">Upload Album</button>
+        {% else %}
+        <h2>Welcome</h2>
+        {% endif %}
     </div>
 
     <!-- Most Popular Albums -->

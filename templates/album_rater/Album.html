@@ -14,7 +14,7 @@
         {% if album.art %}
         <div class="col-md-4 mb-4">
             <div class="album-cover">
-                <img src="{{ MEDIA_URL }}album_covers/{{ album.slug }}" alt="Album Cover" />
+                <img src="{{ album.art.url }}" class="card-img-top img-fluid" alt="{{ album.title }} Cover">
             </div>
         </div>
         {% endif %}
@@ -37,32 +37,17 @@
     <!-- Reviews Section -->
     <div class="section-title">
         <h4>Comments</h4>
+        {% if user.is_authenticated %}
         <button class="btn btn-primary">Add Comment</button>
+        {% endif %}
     </div>
 
     <!-- Review Cards -->
+    {% for comment in comments %}
     <div class="review-card d-flex">
-        <div class="review-avatar"></div>
-        <div class="review-content">
-            <p class="review-score">Score: ★★★★★</p>
-            <p class="review-text">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam eget fermentum massa. Donec eget
-                velit sapien.
-                Quisque non eros aliquet, convallis sapien eu, pretium nisl.
-            </p>
-            <p class="review-author">- User1</p>
-        </div>
+        
+        {% include "album_rater/comment.html" with comment=comment %}
     </div>
-
-    <div class="review-card d-flex">
-        <div class="review-avatar"></div>
-        <div class="review-content">
-            <p class="review-score">Score: ★★★☆☆</p>
-            <p class="review-text">
-                Another example review. Cras vestibulum interdum risus at sollicitudin.
-            </p>
-            <p class="review-author">- User2</p>
-        </div>
-    </div>
+    {% endfor %}
 </div>
 {% endblock %}

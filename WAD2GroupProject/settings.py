@@ -8,7 +8,6 @@ MEDIA_DIR = os.path.join(BASE_DIR, "media")
 STATIC_DIR = os.path.join(BASE_DIR, "static")
 
 MEDIA_ROOT = MEDIA_DIR
-STATIC_ROOT = STATIC_DIR
 
 
 # Quick-start development settings - unsuitable for production
@@ -64,7 +63,7 @@ TEMPLATES = [
     },
 ]
 
-STATICFILE_DIRS = [
+STATICFILES_DIRS = [
     STATIC_DIR
 ]
 

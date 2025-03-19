@@ -17,7 +17,7 @@ class Album(models.Model):
     ]
     title = models.CharField(max_length = MAX_TITLE_LENGTH)
     #rating = models.FloatField(default = 0)
-    art = models.ImageField(upload_to = "album_covers", blank = True)
+    art = models.ImageField(upload_to = "album_covers", blank = False)
     uploader = models.ForeignKey("UserProfile", on_delete = models.CASCADE)
     upload_date = models.DateField(default = now)
     views = models.IntegerField(default = 0)

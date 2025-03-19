@@ -10,8 +10,8 @@
 
 {% block main_block %}
 <!-- Sign In Form -->
-<div class="signin-container">
-    <div class="signin-card">
+<div class="register-container">
+    <div class="register-card">
         <h4>Sign Up</h4>
         <form id = "user_form" method = "post" action = "{% url 'album-rater:register' %}" enctype="multipart/form-data">
             {% csrf_token %}

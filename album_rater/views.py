@@ -113,10 +113,26 @@ def user_logout(request):
 def about(request):
     return render(request, 'album_rater/about.html')
 
+@login_required
 def upload(request):
-    #stub view
-    return render(request, 'album_rater/upload.html')
+    form = AlbumForm()
 
+    if request.method == 'POST':
+        form = AlbumForm(request.POST)
+
+        if form.is_valid():
+            album = form.save(commit=False)
+            album.uploader = request.user
+            album.art = request.FILES['art']
+            album.genre = request.POST.get("genre")
+            album.save()
+
+            return redirect(reverse('album-rater:upload'))
+        else:
+            print(form.errors)
+    return render(request, 'album_rater/upload.html', context={"album_form":form})
+
+@login_required
 def delete_account(request):
     if request.method == 'POST':
         confirm_username = request.POST.get('confirmUsername')

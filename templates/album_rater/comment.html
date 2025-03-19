@@ -1,0 +1,9 @@
+{% load static %}
+
+
+    <div class="review-avatar"></div>
+    <div class="review-content">
+        <p class="review-score">Score: {{comment.score}}/5</p>
+        <p class="review-text">{{comment.text}}</p>
+        <a href = "{% url 'album-rater:user_profile' album.uploader.slug %}" class="review-author">{{comment.user_profile.user.username}}</a>
+    </div>

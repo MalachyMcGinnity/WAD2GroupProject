@@ -70,5 +70,6 @@ def populate():
             comments.append(add_comment(user_messages[(len(users)*i + j)%len(user_messages)], users[i], albums[j]))
 
 if __name__ == "__main__":
-    print("Starting Album Rater popultaion script...")
+    print("Starting Album Rater population script...")
     populate()
+    print("Finished Populating")

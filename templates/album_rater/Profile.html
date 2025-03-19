@@ -15,7 +15,7 @@
         <div class="col-lg-8">
             <div class="row align-items-center">
                 <div class="col-md-4 text-center">
-                    <div class="avatar-placeholder">Avatar</div>
+                    <div class="avatar-placeholder">{{ username }}</div>
                 </div>
                 <div class="col-md-8 user-info">
                     <div class="d-flex align-items-center mb-2">
@@ -47,7 +47,9 @@
         <div class="section-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Uploaded Albums</h5>
             <div>
-                <button class="btn btn-success btn-sm me-2">Add Album</button>
+                {% if user.username == username %}
+                <button class="btn btn-success btn-sm me-2" id="create_album_button" data-url="{% url 'album-rater:upload' %}">Add Album</button>
+                {% endif %}
                 <a href="#">Full List</a>
             </div>
         </div>
@@ -78,15 +80,21 @@
             </div>
             {% endfor %}
             {% else %}
-                <p>Try uploading some albums!</p>
+                <p>Try rating some albums!</p>
             {% endif %}
         </div>
     </div>
 
     <!-- Bottom Buttons -->
     <div class="mt-4 d-flex justify-content-end">
+        {% if user.username == username %}
         <button class="btn btn-secondary btn-sm me-2">Change Password</button>
         <button class="btn btn-danger btn-sm">Delete Account</button>
+        {% endif %}
     </div>
 </div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}

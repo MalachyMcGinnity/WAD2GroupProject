@@ -15,36 +15,10 @@
             <div class="upload-card">
                 <h4>Upload Album</h4>
                 <form>
-                    <!-- Title -->
-                    <div class="mb-3">
-                        <label for="albumTitle" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="albumTitle" placeholder="Album Title">
-                    </div>
-                    <!-- Genre -->
-                    <div class="mb-3">
-                        <label for="genreSelect" class="form-label">Genre</label>
-                        <select class="form-select" id="genreSelect">
-                            <option selected disabled>Select Genre</option>
-                            <option>Pop</option>
-                            <option>Rock</option>
-                            <option>Hip-Hop</option>
-                            <option>Jazz</option>
-                            <option>Electronic</option>
-                        </select>
-                    </div>
-                    <!-- Release Date -->
-                    <div class="mb-3">
-                        <label for="releaseDate" class="form-label">Release Date</label>
-                        <input type="date" class="form-control" id="releaseDate">
-                    </div>
-                    <!-- Description -->
-                    <div class="mb-3">
-                        <label for="albumDescription" class="form-label">Description</label>
-                        <textarea class="form-control" id="albumDescription" rows="4"
-                            placeholder="Brief album description"></textarea>
-                    </div>
+                    {% csrf_token %}
+                    {{album_form.as_p}}
                     <!-- Upload Button -->
-                    <button type="submit" class="btn btn-primary">Upload</button>
+                    <button type="submit" name = "Submit" value= "album" class="btn btn-primary">Upload</button>
                 </form>
             </div>
         </div>

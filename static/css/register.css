@@ -1,5 +1,5 @@
 /* Login Card */
-.login-card {
+.register-card {
     background: #ffffff;
     border-radius: 10px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -8,7 +8,7 @@
     max-width: 600px;
 }
 
-.login-card h4 {
+.register-card h4 {
     font-weight: 600;
     margin-bottom: 1.5rem;
     text-align: center;
@@ -34,12 +34,12 @@
 }
 
 /* Footer Link */
-.login-footer {
+.register-footer {
     text-align: center;
     margin-top: 1rem;
 }
 
-.login-footer a {
+.register-footer a {
     color: #007bff;
     font-weight: 500;
 }
