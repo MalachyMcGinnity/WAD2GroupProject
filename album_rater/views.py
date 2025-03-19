@@ -15,7 +15,7 @@ def get_followed_rated_albums(request):
         followed = UserProfile.objects.get(user = request.user).users_followed.all()
         albums = set()
         for follower in followed:
-            for album in follower.liked_album.all():
+            for album in follower.liked_albums.all():
                 albums.add(album)
                 if len(albums) >= 5:
                     break
