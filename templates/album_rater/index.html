@@ -45,42 +45,22 @@
             <a href="#">Full List</a>
         </div>
         <div class="row g-3">
+            {% if albums_rated_by_followed %}
+            {% for album in albums_rated_by_followed %}
             <div class="col-6 col-sm-4 col-md-2">
                 <div class="album-card">
-                    <div class="album-cover">Album 1</div>
-                    <div class="album-info">User1</div>
+                    <div class="album-cover">
+                        <a href = "{% url 'album-rater:album' album.slug %}">{{ album.title }}</a>
+                    </div>
+                    <div class="album-info">
+                        {{ album.uploader.user.username }}
+                    </div>
                 </div>
             </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 2</div>
-                    <div class="album-info">User2</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 3</div>
-                    <div class="album-info">User3</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 4</div>
-                    <div class="album-info">User4</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 5</div>
-                    <div class="album-info">User5</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 6</div>
-                    <div class="album-info">User6</div>
-                </div>
-            </div>
+            {% endfor %}
+            {% else %}
+            <p>No albums rated by followers.</p>
+            {% endif %}
         </div>
     </section>
     {% endif %}
@@ -92,42 +72,18 @@
             <a href="#">Full List</a>
         </div>
         <div class="row g-3">
+            {% for album in recent_albums %}
             <div class="col-6 col-sm-4 col-md-2">
                 <div class="album-card">
-                    <div class="album-cover">Album 1</div>
-                    <div class="album-info">User1</div>
+                    <div class="album-cover">
+                        <a href = "{% url 'album-rater:album' album.slug %}">{{ album.title }}</a>
+                    </div>
+                    <div class="album-info">
+                        {{ album.uploader.user.username }}
+                    </div>
                 </div>
             </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 2</div>
-                    <div class="album-info">User2</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 3</div>
-                    <div class="album-info">User3</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 4</div>
-                    <div class="album-info">User4</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 5</div>
-                    <div class="album-info">User5</div>
-                </div>
-            </div>
-            <div class="col-6 col-sm-4 col-md-2">
-                <div class="album-card">
-                    <div class="album-cover">Album 6</div>
-                    <div class="album-info">User6</div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 </div>

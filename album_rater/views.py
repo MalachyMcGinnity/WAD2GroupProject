@@ -10,6 +10,21 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 
+def get_followed_rated_albums(request):
+    try:
+        followed = UserProfile.objects.get(user = request.user).users_followed.all()
+        albums = set()
+        for follower in followed:
+            for album in follower.liked_album.all():
+                albums.add(album)
+                if len(albums) >= 5:
+                    break
+            if len(albums) >= 5:
+                break
+        return list(albums)
+    except:
+        return set()
+
 def index(request):
     album_list = Album.objects
     user_profile_list = UserProfile.objects
@@ -20,6 +35,8 @@ def index(request):
     context_dict['userprofiles'] = user_profile_list
     context_dict['comments'] = comment_list
     context_dict["popular_albums"] = album_list.order_by("-views")[:5]
+    context_dict["albums_rated_by_followed"] = get_followed_rated_albums(request)
+    context_dict["recent_albums"] = album_list.order_by("-upload_date")[:5]
 
     visitor_cookie_handler(request)
     visits = request.session.get('visits', 1)
