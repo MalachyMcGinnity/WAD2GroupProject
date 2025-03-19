@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-md-8 user-info">
                     <div class="d-flex align-items-center mb-2">
-                        <h4 class="mb-0 me-3">Username</h4>
+                        <h4 class="mb-0 me-3">{{ username }}</h4>
                         {% if user.username != username %}
                         <button class="btn btn-primary btn-sm">Follow</button>
                         {% endif %}
@@ -35,63 +35,52 @@
         <!-- Right: Favourite Album -->
         {% if favourite %}
         <div class="col-lg-4 text-center">
-            <h5>Favourite Album</h5>
-            {% if favourite.art %}
-            <div class="album-cover-placeholder mb-2">
-                <img src="{{MEDIA_URL}}album_rater/{{ favourite.slug }}" alt="Album Cover"/>
-            </div>
-            {% endif %}
-            <p class="mb-1"><strong>Album:</strong> {{ favourite.title }}</p>
-            <p><strong>By User:</strong> {{ favourite.uploader }}</p>
+            <strong>Favourite Album: </strong><br/>
+            {% include 'album_rater/album_card.html' with album=favourite %}
         </div>
+        {% else %}
         {% endif %}
     </div>
 
     <!-- Uploaded Albums Section -->
-    <div class="section-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Uploaded Albums</h5>
-        <div>
-            <button class="btn btn-success btn-sm me-2">Add Album</button>
-            <a href="#">Full List</a>
+    <div class="form-control mb-3 mt-3 border-3">
+        <div class="section-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Uploaded Albums</h5>
+            <div>
+                <button class="btn btn-success btn-sm me-2">Add Album</button>
+                <a href="#">Full List</a>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <!-- Example album items -->
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">Album1</div>
-            <small>User1</small>
+        <div class="row">
+            {% if uploaded_albums %}
+            {% for album in uploaded_albums %}
+            <div class="col-6 col-sm-4 col-md-2 album-item">
+                {% include 'album_rater/album_card.html' with album=favourite %}
+            </div>
+            {% endfor %}
+            {% else %}
+                <p>Try uploading some albums!</p>
+            {% endif %}
         </div>
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">Album2</div>
-            <small>User1</small>
-        </div>
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">Album3</div>
-            <small>User1</small>
-        </div>
-        <!-- Add more album cards as needed -->
     </div>
 
     <!-- Rated Albums Section -->
-    <div class="section-header d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">Rated Albums</h5>
-        <a href="#">Full List</a>
-    </div>
-    <div class="row">
-        <!-- Example album items -->
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">AlbumX</div>
-            <small>User1</small>
+    <div class="form-control mb-3 border-3">
+        <div class="section-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Rated Albums</h5>
+            <a href="#">Full List</a>
         </div>
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">AlbumY</div>
-            <small>User2</small>
+        <div class="row">
+            {% if rated_albums %}
+            {% for album in rated_albums %}
+            <div class="col-6 col-sm-4 col-md-2 album-item">
+                {% include 'album_rater/album_card.html' with album=favourite %}
+            </div>
+            {% endfor %}
+            {% else %}
+                <p>Try uploading some albums!</p>
+            {% endif %}
         </div>
-        <div class="col-6 col-sm-4 col-md-2 album-item">
-            <div class="album-cover-placeholder">AlbumZ</div>
-            <small>User3</small>
-        </div>
-        <!-- Add more album cards as needed -->
     </div>
 
     <!-- Bottom Buttons -->

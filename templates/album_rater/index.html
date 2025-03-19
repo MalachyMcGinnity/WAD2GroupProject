@@ -16,69 +16,77 @@
     </div>
 
     <!-- Most Popular Albums -->
-    <section>
-        <div class="section-header">
-            <h4>Most Popular Albums</h4>
-            <a href="#">Full List</a>
-        </div>
-        <div class="row g-3">
-            {% if popular_albums %}
-            {% for album in popular_albums %}
-            <div class="col-6 col-sm-4 col-md-2">
-                {% include 'album_rater/album_card.html' with album=album %}
+    <div class="form-control mb-3 mt-3 border-3">
+        <section>
+            <div class="section-header">
+                <h4>Most Popular Albums</h4>
+                <a href="#">Full List</a>
             </div>
-            {% endfor %}
-            {% else %}
-                <p>No popular albums at the moment.</p>
-            {% endif %}
-        </div>
-    </section>
+            <div class="row g-3">
+                {% if popular_albums %}
+                {% for album in popular_albums %}
+                <div class="col-6 col-sm-4 col-md-2">
+                    {% include 'album_rater/album_card.html' with album=album %}
+                </div>
+                {% endfor %}
+                {% else %}
+                    <p>No popular albums at the moment.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
 
     {% if user.is_authenticated %}
-    <!-- Albums Users You Follow Rated -->
-    <section>
-        <div class="section-header">
-            <h4>Albums Users You Follow Rated</h4>
-            <a href="#">Full List</a>
-        </div>
-        <div class="row g-3">
-            {% if albums_rated_by_followed %}
-            {% for album in albums_rated_by_followed %}
-            <div class="col-6 col-sm-4 col-md-2">
-                {% include 'album_rater/album_card.html' with album=album %}
+    <div class="form-control mb-3 border-3">
+        <!-- Albums Users You Follow Rated -->
+        <section>
+            <div class="section-header">
+                <h4>Albums Users You Follow Rated</h4>
+                <a href="#">Full List</a>
             </div>
-            {% endfor %}
-            {% else %}
-            <p>No albums rated by followers.</p>
-            {% endif %}
-        </div>
-    </section>
+            <div class="row g-3">
+                {% if albums_rated_by_followed %}
+                {% for album in albums_rated_by_followed %}
+                <div class="col-6 col-sm-4 col-md-2">
+                    {% include 'album_rater/album_card.html' with album=album %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <p>No albums rated by followers.</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
     {% endif %}
 
     <!-- Newest Albums -->
-    <section>
-        <div class="section-header">
-            <h4>Newest Albums</h4>
-            <a href="#">Full List</a>
-        </div>
-        <div class="row g-3">
-            {% if recent_albums %}
-            {% for album in recent_albums %}
-            <div class="col-6 col-sm-4 col-md-2">
-                {% include 'album_rater/album_card.html' with album=album %}
+    <div class="form-control mb-3 border-3">
+        <section>
+            <div class="section-header">
+                <h4>Newest Albums</h4>
+                <a href="#">Full List</a>
             </div>
-            {% endfor %}
-            {% else %}
-                <p>No albums have been uploaded, add some yourself!</p>
-            {% endif %}
-        </div>
-    </section>
+            <div class="row g-3">
+                {% if recent_albums %}
+                {% for album in recent_albums %}
+                <div class="col-6 col-sm-4 col-md-2">
+                    {% include 'album_rater/album_card.html' with album=album %}
+                </div>
+                {% endfor %}
+                {% else %}
+                    <p>No albums have been uploaded, add some yourself!</p>
+                {% endif %}
+            </div>
+        </section>
+    </div>
 </div>
 
 <!-- Footer -->
 <footer>
     <a href="{% url 'album-rater:about' %}">About</a>
 </footer>
+{% endblock %}
 
+{% block js %}
 <script src="{% static 'js/index.js' %}"></script>
 {% endblock %}

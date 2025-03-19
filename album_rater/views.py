@@ -140,8 +140,8 @@ def delete_account(request):
 
 def profile(request, username_slug):
     user = UserProfile.objects.get(slug = username_slug)
-    context_dict = {"username": username_slug}
-    context_dict["ex_albums"] = Album.objects.filter(uploader = user)[:3]
+    context_dict = {"username": user.user.username}
+    context_dict["uploaded_albums"] = Album.objects.filter(uploader = user)[:3]
     context_dict["rated_albums"] = user.liked_albums.all()[:3]
     context_dict["favourite"] = user.favourite_album
     return render(request, 'album_rater/profile.html', context = context_dict)
