@@ -48,8 +48,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Comment(models.Model):
-    MAX_COMMENT_LENGTH = 255
-    text = models.CharField(max_length=MAX_COMMENT_LENGTH)
+    text = models.TextField()
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='ratings')
     score = models.IntegerField(default=0)
