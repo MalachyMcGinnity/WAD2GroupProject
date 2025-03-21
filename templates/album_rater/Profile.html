@@ -57,7 +57,7 @@
             {% if uploaded_albums %}
             {% for album in uploaded_albums %}
             <div class="col-6 col-sm-4 col-md-2 album-item">
-                {% include 'album_rater/album_card.html' with album=favourite %}
+                {% include 'album_rater/album_card.html' with album=album %}
             </div>
             {% endfor %}
             {% else %}
@@ -76,7 +76,7 @@
             {% if rated_albums %}
             {% for album in rated_albums %}
             <div class="col-6 col-sm-4 col-md-2 album-item">
-                {% include 'album_rater/album_card.html' with album=favourite %}
+                {% include 'album_rater/album_card.html' with album=album %}
             </div>
             {% endfor %}
             {% else %}
@@ -88,8 +88,8 @@
     <!-- Bottom Buttons -->
     <div class="mt-4 d-flex justify-content-end">
         {% if user.username == username %}
-        <button class="btn btn-secondary btn-sm me-2">Change Password</button>
-        <button class="btn btn-danger btn-sm">Delete Account</button>
+        <button class="btn btn-secondary btn-sm me-2" id="change_password_button" data-url="{% url 'album-rater:change_password' %}">Change Password</button>
+        <button class="btn btn-danger btn-sm" id="delete_account_button" data-url="{% url 'album-rater:delete_account' %}">Delete Account</button>
         {% endif %}
     </div>
 </div>

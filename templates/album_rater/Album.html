@@ -21,7 +21,9 @@
         <!-- Album Details (Right) -->
         <div class="col-md-8 album-details">
             <div class="d-flex justify-content-between align-items-start">
-                <h3>{{ album.title }}<small class="text-muted"> - Released By</small> {{ album.uploader.user.username }}</h3>
+                <h3>{{ album.title }}</h3>
+                <br/>
+                <h4><a href = "{% url 'album-rater:user_profile' album.uploader.slug %}" class="album-uploader">{{ album.uploader.user.username }}</a></h4>
                 <div class="views-count">
                     Views: {{ album.views }}
                 </div>

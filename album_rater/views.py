@@ -140,7 +140,7 @@ def delete_account(request):
 
         if confirm_username != request.user.username:
             messages.error(request, "The username doesn't mactch the account.")
-            return render(request, 'delete_account.html')
+            return render(request, 'album_rater/delete_account.html')
         
         user = authenticate(username=request.user.username, password=password)
 
@@ -152,7 +152,7 @@ def delete_account(request):
         else:
             messages.error(request, "Password is incorrect")
 
-    return render(request, 'delete_account.html')
+    return render(request, 'album_rater/delete_account.html')
 
 def profile(request, username_slug):
     user = UserProfile.objects.get(slug = username_slug)
@@ -194,7 +194,7 @@ def change_password(request):
         else:
             messages.error(request, "Please fill in all fields.")
 
-    return render(request, 'change_password.html')
+    return render(request, 'album_rater/change_password.html')
 
 def visitor_cookie_handler(request):
     pass
