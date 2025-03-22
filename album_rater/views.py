@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from album_rater.models import Album, UserProfile, Comment
 from album_rater.forms import AlbumForm, UserForm, UserProfileForm, CommentForm
 from django.urls import reverse
@@ -10,11 +10,21 @@ from django.contrib import messages
 from django.utils import timezone
 from datetime import date
 from django.db.models import Avg
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.template.loader import render_to_string
 
 def index(request):
-    top_rated_albums = Album.objects.all().order_by('-views')[:5]
+    top_rated_albums = Album.objects.annotate(avg_rating=Avg('ratings__rating_value')).order_by('-avg_rating')[:5]
     today = date.today()
-    todays_albums = Album.objects.filter(upload_date=today)
+    todays_albums_list = Album.objects.filter(upload_date=today)
+    paginator = Paginator(todays_albums_list, 18)
+    page_todays = request.GET.get('page_todays')
+    try:
+        todays_albums = paginator.page(page_todays)
+    except PageNotAnInteger:
+        todays_albums = paginator.page(1)
+    except EmptyPage:
+        todays_albums = paginator.page(paginator.num_pages)
 
     followed_albums = None
     if request.user.is_authenticated:
@@ -25,6 +35,8 @@ def index(request):
     search_results = None
     if query:
         search_results = Album.objects.filter(title__icontains=query)
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.GET.get('partial') == 'todays_albums':
+        return render(request, 'album_rater/_todays_albums.html', {'todays_albums': todays_albums, 'query': query})
     context = {
         'top_rated_albums': top_rated_albums,
         'todays_albums': todays_albums,
@@ -185,12 +197,18 @@ def album(request, album_slug):
     if request.user.is_authenticated:
         current_profile = get_object_or_404(UserProfile, user=request.user)
         user_comment = Comment.objects.filter(album=album_obj, user_profile=current_profile).first()
+
     if request.method == "POST":
         if not request.user.is_authenticated:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"status": "error", "message": "You must be logged in to comment."})
             messages.error(request, "You must be logged in to comment.")
             return redirect(reverse('album_rater:login'))
         if album_obj.uploader == current_profile:
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"status": "error", "message": "You cannot comment on your own album."})
             messages.error(request, "You cannot comment on your own album.")
+            return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
         else:
             form = CommentForm(request.POST)
             if form.is_valid():
@@ -200,46 +218,80 @@ def album(request, album_slug):
                     user_comment.text = comment_text
                     user_comment.rating_value = rating_value
                     user_comment.save()
-                    messages.success(request, "Comment updated successfully.")
+                    message = "Comment updated successfully."
                 else:
-                    Comment.objects.create(
+                    user_comment = Comment.objects.create(
                         text=comment_text,
                         user_profile=current_profile,
                         album=album_obj,
                         score=0,
                         rating_value=rating_value
                     )
-                    messages.success(request, "Comment added successfully.")
+                    message = "Comment added successfully."
             else:
-                messages.error(request, "There was an error in your comment form.")
+                error_msg = ""
+                for field, errors in form.errors.items():
+                    error_msg += f"{field}: {' '.join(errors)} "
+                error_msg = error_msg.strip()
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return JsonResponse({"status": "error", "message": error_msg})
+                messages.error(request, error_msg)
+                return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
+
+        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+            comments_list = Comment.objects.filter(album=album_obj)
+            paginator_comments = Paginator(comments_list, 5)
+            page_comments = request.GET.get('page_comments') or 1
+            try:
+                comments_paginated = paginator_comments.page(page_comments)
+            except PageNotAnInteger:
+                comments_paginated = paginator_comments.page(1)
+            except EmptyPage:
+                comments_paginated = paginator_comments.page(paginator_comments.num_pages)
+            rendered_comments = render_to_string('album_rater/_comments_list.html', {'comments': comments_paginated, 'album': album_obj})
+            # Calculate the updated average rating value
+            avg_rating = round(comments_list.aggregate(avg=Avg('rating_value'))['avg'] or 0, 1)
+            return JsonResponse({
+                "status": "success",
+                "message": message,
+                "comments_html": rendered_comments,
+                "comment_text": comment_text,
+                "rating_value": rating_value,
+                "button_text": "Edit Comment",
+                "button_class": "btn btn-primary",
+                "average_rating": avg_rating
+            })
         return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
-    else:
-        all_comments = Comment.objects.filter(album=album_obj)
-        average_rating = all_comments.aggregate(avg=Avg('rating_value'))['avg']
-        if average_rating is not None:
-            average_rating = round(average_rating, 1)
-        if current_profile and user_comment:
-            comments_list = list(all_comments.exclude(id=user_comment.id))
-            comments = [user_comment] + comments_list
-        else:
-            comments = all_comments
-    comment_form = CommentForm(initial={'text': user_comment.text if user_comment else '',
-                                          'rating_value': user_comment.rating_value if user_comment else ''})
+
+    comments_list = Comment.objects.filter(album=album_obj)
+    paginator_comments = Paginator(comments_list, 5)
+    page_comments = request.GET.get('page_comments') or 1
+    try:
+        comments_paginated = paginator_comments.page(page_comments)
+    except PageNotAnInteger:
+        comments_paginated = paginator_comments.page(1)
+    except EmptyPage:
+        comments_paginated = paginator_comments.page(paginator_comments.num_pages)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest' and request.GET.get('partial') == 'comments':
+        return render(request, 'album_rater/_comments_list.html', {'comments': comments_paginated, 'album': album_obj})
+
     context = {
         'album': album_obj,
-        'comments': comments,
-        'average_rating': average_rating,
-        'comment_form': comment_form,
+        'comments': comments_paginated,
+        'average_rating': round(comments_list.aggregate(avg=Avg('rating_value'))['avg'] or 0, 1) if comments_list.exists() else None,
+        'comment_form': CommentForm(initial={'text': user_comment.text if user_comment else '',
+                                               'rating_value': user_comment.rating_value if user_comment else ''}),
         'user_comment': user_comment,
     }
-    # Cookie system: one view from one registered user
     response = render(request, 'album_rater/album.html', context)
     if request.user.is_authenticated:
-        cookie_name = f'viewed_album_{album_obj.id}'
-        if not request.COOKIES.get(cookie_name):
+        viewed_albums = request.session.get('viewed_albums', [])
+        if album_obj.id not in viewed_albums:
             album_obj.views += 1
             album_obj.save()
-            response.set_cookie(cookie_name, 'true', max_age=86400, path='/')
+            viewed_albums.append(album_obj.id)
+            request.session['viewed_albums'] = viewed_albums
     return response
 
 def profile(request, username):
@@ -252,10 +304,36 @@ def profile(request, username):
         current_profile = get_object_or_404(UserProfile, user=request.user)
         if user_profile in current_profile.users_followed.all():
             is_following = True
+
+    paginator_uploaded = Paginator(uploaded_albums, 6)
+    page_uploaded = request.GET.get('page_uploaded')
+    try:
+        uploaded_albums_paginated = paginator_uploaded.page(page_uploaded)
+    except PageNotAnInteger:
+        uploaded_albums_paginated = paginator_uploaded.page(1)
+    except EmptyPage:
+        uploaded_albums_paginated = paginator_uploaded.page(paginator_uploaded.num_pages)
+
+    paginator_rated = Paginator(rated_albums, 6)
+    page_rated = request.GET.get('page_rated')
+    try:
+        rated_albums_paginated = paginator_rated.page(page_rated)
+    except PageNotAnInteger:
+        rated_albums_paginated = paginator_rated.page(1)
+    except EmptyPage:
+        rated_albums_paginated = paginator_rated.page(paginator_rated.num_pages)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        partial = request.GET.get('partial')
+        if partial == 'uploaded_albums':
+            return render(request, 'album_rater/_uploaded_albums.html', {'uploaded_albums': uploaded_albums_paginated})
+        elif partial == 'rated_albums':
+            return render(request, 'album_rater/_rated_albums.html', {'rated_albums': rated_albums_paginated})
+
     context = {
         'user_profile': user_profile,
-        'uploaded_albums': uploaded_albums,
-        'rated_albums': rated_albums,
+        'uploaded_albums': uploaded_albums_paginated,
+        'rated_albums': rated_albums_paginated,
         'is_following': is_following,
     }
     return render(request, 'album_rater/profile.html', context)
@@ -279,9 +357,34 @@ def search(request):
     elif sort_option == 'new':
         album_results = album_results.order_by('-upload_date')
 
+    paginator_albums = Paginator(album_results, 18)
+    page_albums = request.GET.get('page_albums')
+    try:
+        album_results_paginated = paginator_albums.page(page_albums)
+    except PageNotAnInteger:
+        album_results_paginated = paginator_albums.page(1)
+    except EmptyPage:
+        album_results_paginated = paginator_albums.page(paginator_albums.num_pages)
+
+    paginator_users = Paginator(user_results, 18)
+    page_users = request.GET.get('page_users')
+    try:
+        user_results_paginated = paginator_users.page(page_users)
+    except PageNotAnInteger:
+        user_results_paginated = paginator_users.page(1)
+    except EmptyPage:
+        user_results_paginated = paginator_users.page(paginator_users.num_pages)
+
+    if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        partial = request.GET.get('partial')
+        if partial == 'albums_search':
+            return render(request, 'album_rater/_albums_search.html', {'albums': album_results_paginated, 'query': query, 'sort': sort_option, 'genre': genre_filter})
+        elif partial == 'users_search':
+            return render(request, 'album_rater/_users_search.html', {'users': user_results_paginated, 'query': query, 'sort': sort_option, 'genre': genre_filter})
+
     context = {
-        'albums': album_results,
-        'users': user_results,
+        'albums': album_results_paginated,
+        'users': user_results_paginated,
         'query': query,
         'sort': sort_option,
         'genre': genre_filter,

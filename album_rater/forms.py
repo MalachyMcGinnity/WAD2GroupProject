@@ -23,7 +23,6 @@ class AlbumForm(forms.ModelForm):
 
     class Meta:
         model = Album
-        # Remove the uploader field, it will be set automatically in the view
         fields = ("title", "art", "genre", "description")
 
 class UserForm(forms.ModelForm):
@@ -48,7 +47,12 @@ class UserProfileForm(forms.ModelForm):
         fields = ("picture", "bio")
 
 class CommentForm(forms.ModelForm):
-    # Use TypedChoiceField with coerce=int so that the rating value is converted to int
+    text = forms.CharField(
+        widget=forms.Textarea,
+        max_length=1500,
+        label="Comment",
+        help_text="Maximum 1500 characters."
+    )
     rating_value = forms.TypedChoiceField(
         choices=[(i, str(i)) for i in range(1, 11)],
         label="Rating (1-10)",

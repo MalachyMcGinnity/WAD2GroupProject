@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-8">
           <h2 class="card-title">{{ user_profile.user.username }}</h2>
-          <p class="card-text">{{ user_profile.bio }}</p>
+          <p class="card-text">{{ user_profile.bio|linebreaksbr }}</p>
           {% if request.user.is_authenticated and request.user.username == user_profile.user.username %}
               <a href="{% url 'album_rater:edit_profile' %}" class="btn btn-outline-primary">Edit Profile</a>
               <a href="{% url 'album_rater:password_change' %}" class="btn btn-outline-secondary">Change Password</a>
@@ -31,48 +31,14 @@
   <div class="row">
     <div class="col-md-6">
       <h4>Uploaded Albums</h4>
-      <div class="row">
-          {% for album in uploaded_albums %}
-              <div class="col-6 col-sm-4 col-md-6 mb-3">
-                  <div class="card">
-                      <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
-                          {% if album.art %}
-                              <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
-                          {% else %}
-                              <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
-                          {% endif %}
-                          <div class="card-body">
-                              <p class="card-text album-title">{{ album.title }}</p>
-                          </div>
-                      </a>
-                  </div>
-              </div>
-          {% empty %}
-              <p>No uploaded albums.</p>
-          {% endfor %}
+      <div id="uploaded_albums_container">
+        {% include "album_rater/_uploaded_albums.html" %}
       </div>
     </div>
     <div class="col-md-6">
       <h4>Rated Albums</h4>
-      <div class="row">
-          {% for album in rated_albums %}
-              <div class="col-6 col-sm-4 col-md-6 mb-3">
-                  <div class="card">
-                      <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
-                          {% if album.art %}
-                              <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
-                          {% else %}
-                              <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
-                          {% endif %}
-                          <div class="card-body">
-                              <p class="card-text album-title">{{ album.title }}</p>
-                          </div>
-                      </a>
-                  </div>
-              </div>
-          {% empty %}
-              <p>No rated albums.</p>
-          {% endfor %}
+      <div id="rated_albums_container">
+        {% include "album_rater/_rated_albums.html" %}
       </div>
     </div>
   </div>

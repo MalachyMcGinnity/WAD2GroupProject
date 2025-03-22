@@ -32,49 +32,15 @@
 
 <div class="mb-4">
     <h4>Album Results</h4>
-    <div class="row">
-        {% for album in albums %}
-            <div class="col-6 col-sm-4 col-md-2 mb-3">
-                <div class="card">
-                    <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
-                        {% if album.art %}
-                            <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
-                        {% else %}
-                            <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
-                        {% endif %}
-                        <div class="card-body">
-                            <p class="card-text album-title">{{ album.title }}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% empty %}
-            <p>No albums found.</p>
-        {% endfor %}
+    <div id="albums_search_container">
+      {% include "album_rater/_albums_search.html" %}
     </div>
 </div>
 
 <div class="mb-4">
     <h4>User Results</h4>
-    <div class="row">
-        {% for user in users %}
-            <div class="col-6 col-sm-4 col-md-2 mb-3">
-                <div class="card">
-                    <a href="{% url 'album_rater:user_profile' username=user.username %}">
-                        {% if user.userprofile.picture %}
-                            <img src="{{ user.userprofile.picture.url }}" alt="{{ user.username }}" class="card-img-top album-cover">
-                        {% else %}
-                            <div class="card-img-top text-center py-4 album-cover">User</div>
-                        {% endif %}
-                        <div class="card-body">
-                            <p class="card-text album-title">{{ user.username }}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% empty %}
-            <p>No users found.</p>
-        {% endfor %}
+    <div id="users_search_container">
+      {% include "album_rater/_users_search.html" %}
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,26 @@
+<div id="commentsContainer">
+    {% for comment in comments %}
+        <div class="card mb-2">
+            <div class="card-body">
+                <p class="card-text comment-text">{{ comment.text|linebreaksbr }}</p>
+                {% if comment.rating_value %}
+                    <p class="card-text"><small class="text-muted">Rating: {{ comment.rating_value }} / 10</small></p>
+                {% endif %}
+                <p class="card-text"><small class="text-muted">By {{ comment.user_profile.user.username }}</small></p>
+            </div>
+        </div>
+    {% empty %}
+        <p>No comments yet.</p>
+    {% endfor %}
+</div>
+{% if comments.has_other_pages %}
+<div class="pagination mt-3">
+    {% if comments.has_previous %}
+        <a href="?page_comments={{ comments.previous_page_number }}&partial=comments" class="ajax-pagination">Previous</a>
+    {% endif %}
+    <span>Page {{ comments.number }} of {{ comments.paginator.num_pages }}</span>
+    {% if comments.has_next %}
+        <a href="?page_comments={{ comments.next_page_number }}&partial=comments" class="ajax-pagination">Next</a>
+    {% endif %}
+</div>
+{% endif %}
