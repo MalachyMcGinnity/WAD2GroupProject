@@ -5,9 +5,9 @@ import random
 from django.core.files import File
 
 # === Constants for customizing database filling ===
-NUM_USERS = 8                   # Number of users
-ALBUMS_PER_USER = 5             # Number of albums per user
-COMMENTS_PER_ALBUM = 6          # Number of comments under each album
+NUM_USERS = 10                   # Number of users
+ALBUMS_PER_USER = 10             # Number of albums per user
+COMMENTS_PER_ALBUM = 10          # Number of comments under each album
 # ===========================================================================
 
 # List of test images (used for both covers and avatars)

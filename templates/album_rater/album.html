@@ -15,7 +15,7 @@
         <p><strong>Upload Date:</strong> {{ album.upload_date }}</p>
         <p><strong>Genre:</strong> {{ album.genre }}</p>
         <p><strong>Views:</strong> {{ album.views }}</p>
-        <p><strong>Average Rating:</strong> {{ average_rating|default:"No ratings yet" }}</p>
+        <p><strong>Average Rating:</strong> <span id="avgRating">{{ average_rating|default:"No ratings yet" }}</span></p>
         {% if request.user.is_authenticated and request.user == album.uploader.user %}
             <a href="{% url 'album_rater:edit_album' album_slug=album.slug %}" class="btn btn-outline-primary">Edit Album</a>
             <a href="{% url 'album_rater:delete_album' album_slug=album.slug %}" class="btn btn-outline-danger">Delete Album</a>
@@ -27,27 +27,15 @@
 <div class="row mb-4">
     <div class="col-12">
         <h5>Description:</h5>
-        <p>{{ album.description }}</p>
+        <p>{{ album.description|linebreaks }}</p>
     </div>
 </div>
 {% endif %}
 
 <div class="mb-4">
     <h4>Comments</h4>
-    <div id="commentsSection">
-        {% for comment in comments %}
-            <div class="card mb-2">
-                <div class="card-body">
-                    <p class="card-text comment-text">{{ comment.text }}</p>
-                    {% if comment.rating_value %}
-                        <p class="card-text"><small class="text-muted">Rating: {{ comment.rating_value }} / 10</small></p>
-                    {% endif %}
-                    <p class="card-text"><small class="text-muted">By {{ comment.user_profile.user.username }}</small></p>
-                </div>
-            </div>
-        {% empty %}
-            <p>No comments yet.</p>
-        {% endfor %}
+    <div id="commentsContainer">
+      {% include "album_rater/_comments_list.html" %}
     </div>
 </div>
 
@@ -58,7 +46,7 @@
     {% else %}
         <h5>Add a Comment</h5>
     {% endif %}
-    <form method="post" action="{% url 'album_rater:album_detail' album_slug=album.slug %}">
+    <form id="commentForm" method="post" action="{% url 'album_rater:album_detail' album_slug=album.slug %}">
         {% csrf_token %}
         <input type="hidden" name="album_id" value="{{ album.id }}">
         <div class="mb-3">
@@ -66,7 +54,11 @@
             <select class="form-select" name="rating_value" id="rating_value">
                 {% for i in "12345678910"|slice:"0:10" %}
                     <option value="{{ forloop.counter }}"
-                    {% if user_comment and user_comment.rating_value == forloop.counter %}selected{% endif %}>
+                    {% if user_comment and user_comment.rating_value == forloop.counter %}
+                        selected
+                    {% elif not user_comment and forloop.first %}
+                        selected
+                    {% endif %}>
                         {{ forloop.counter }}
                     </option>
                 {% endfor %}
@@ -74,10 +66,11 @@
         </div>
         <div class="mb-3">
             <label for="text" class="form-label">Comment</label>
-            <textarea class="form-control" name="text" id="text" placeholder="Enter your comment here">{% if user_comment %}{{ user_comment.text }}{% endif %}</textarea>
+            <textarea class="form-control" name="text" id="text" placeholder="Enter your comment here" maxlength="1500">{% if user_comment %}{{ user_comment.text }}{% endif %}</textarea>
+            <small id="charCount" class="form-text text-muted">0/1500 characters</small>
         </div>
-        <button type="submit" class="btn btn-success">
-            {% if user_comment %}Update Comment{% else %}Submit Comment{% endif %}
+        <button type="submit" class="btn {% if user_comment %}btn-primary{% else %}btn-success{% endif %}">
+            {% if user_comment %}Edit Comment{% else %}Submit Comment{% endif %}
         </button>
     </form>
 </div>

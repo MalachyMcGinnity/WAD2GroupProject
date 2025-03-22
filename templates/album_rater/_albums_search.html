@@ -1,0 +1,34 @@
+<div id="albums_search_inner">
+    <div class="row">
+      {% for album in albums %}
+          <div class="col-6 col-sm-4 col-md-2 mb-3">
+              <div class="card">
+                  <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
+                      {% if album.art %}
+                          <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
+                      {% else %}
+                          <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
+                      {% endif %}
+                      <div class="card-body">
+                          <p class="card-text album-title">{{ album.title }}</p>
+                      </div>
+                  </a>
+              </div>
+          </div>
+      {% empty %}
+          <p>No albums found.</p>
+      {% endfor %}
+    </div>
+    {% if albums.has_other_pages %}
+    <div class="pagination mt-3">
+        {% if albums.has_previous %}
+            <a href="?page_albums={{ albums.previous_page_number }}&partial=albums_search&q={{ query }}&sort={{ sort }}&genre={{ genre }}" class="ajax-pagination">Previous</a>
+        {% endif %}
+        <span>Page {{ albums.number }} of {{ albums.paginator.num_pages }}</span>
+        {% if albums.has_next %}
+            <a href="?page_albums={{ albums.next_page_number }}&partial=albums_search&q={{ query }}&sort={{ sort }}&genre={{ genre }}" class="ajax-pagination">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  

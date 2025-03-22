@@ -38,28 +38,9 @@
 
 <section>
     <h4>New Albums Today</h4>
-    {% if todays_albums %}
-      <div class="row">
-        {% for album in todays_albums %}
-            <div class="col-6 col-sm-4 col-md-2 mb-3">
-                <div class="card">
-                    <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
-                        {% if album.art %}
-                            <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
-                        {% else %}
-                            <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
-                        {% endif %}
-                        <div class="card-body">
-                            <p class="card-text album-title">{{ album.title }}</p>
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% endfor %}
-      </div>
-    {% else %}
-      <p class="text-center">There are no albums yet...</p>
-    {% endif %}
+    <div id="todays_albums_container">
+        {% include "album_rater/_todays_albums.html" %}
+    </div>
 </section>
 
 {% if request.user.is_authenticated and followed_albums %}

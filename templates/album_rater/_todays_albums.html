@@ -1,0 +1,32 @@
+<div id="todays_albums_inner">
+    <div class="row">
+      {% for album in todays_albums %}
+          <div class="col-6 col-sm-4 col-md-2 mb-3">
+              <div class="card">
+                  <a href="{% url 'album_rater:album_detail' album_slug=album.slug %}">
+                      {% if album.art %}
+                          <img src="{{ album.art.url }}" alt="{{ album.title }}" class="card-img-top album-cover">
+                      {% else %}
+                          <div class="card-img-top text-center py-4 album-cover">{{ album.title|slice:":10" }}</div>
+                      {% endif %}
+                      <div class="card-body">
+                          <p class="card-text album-title">{{ album.title }}</p>
+                      </div>
+                  </a>
+              </div>
+          </div>
+      {% endfor %}
+    </div>
+    {% if todays_albums.has_other_pages %}
+    <div class="pagination mt-3">
+        {% if todays_albums.has_previous %}
+            <a href="?page_todays={{ todays_albums.previous_page_number }}&partial=todays_albums{% if query %}&q={{ query }}{% endif %}" class="ajax-pagination">Previous</a>
+        {% endif %}
+        <span>Page {{ todays_albums.number }} of {{ todays_albums.paginator.num_pages }}</span>
+        {% if todays_albums.has_next %}
+            <a href="?page_todays={{ todays_albums.next_page_number }}&partial=todays_albums{% if query %}&q={{ query }}{% endif %}" class="ajax-pagination">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  
