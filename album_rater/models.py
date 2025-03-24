@@ -3,8 +3,14 @@ import datetime as dt
 from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.utils.timezone import now
-from django.core.validators import MinValueValidator, MaxValueValidator, MaxLengthValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Avg, Q
+from django.core.exceptions import ValidationError
+
+def validate_normalized_text_length(value):
+    normalized = value.replace('\r\n', '\n')
+    if len(normalized) > 1500:
+        raise ValidationError(f"Ensure this value has at most 1500 characters (it has {len(normalized)}).")
 
 class Album(models.Model):
     MAX_TITLE_LENGTH = 40
@@ -48,7 +54,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 class Comment(models.Model):
-    text = models.TextField(validators=[MaxLengthValidator(1500)])
+    text = models.TextField(validators=[validate_normalized_text_length])
     user_profile = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
     album = models.ForeignKey(Album, on_delete=models.CASCADE, related_name='ratings')
     score = models.IntegerField(default=0)

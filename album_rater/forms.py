@@ -49,7 +49,6 @@ class UserProfileForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     text = forms.CharField(
         widget=forms.Textarea,
-        max_length=1500,
         label="Comment",
         help_text="Maximum 1500 characters."
     )
@@ -62,3 +61,12 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ("text", "rating_value", )
+        
+    def clean_text(self):
+        text = self.cleaned_data.get('text', '')
+        normalized_text = text.replace('\r\n', '\n')
+        if len(normalized_text) > 1500:
+            raise forms.ValidationError(
+                f"Ensure this value has at most 1500 characters (it has {len(normalized_text)})."
+            )
+        return normalized_text

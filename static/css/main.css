@@ -3,24 +3,35 @@ body {
     font-family: 'Poppins', sans-serif;
     background: #f4f7f9;
     color: #343a40;
+    padding-top: 80px;
 }
+
 .navbar {
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
+
 .navbar-brand {
     font-weight: 600;
     font-size: 1.5rem;
     color: #007bff;
 }
+
 .navbar-nav .nav-link {
     font-weight: 500;
     color: #555;
     transition: color 0.3s;
 }
+
 .navbar-nav .nav-link:hover {
     color: #007bff;
 }
+
 /* Square album covers on the main page */
 .album-cover {
     width: 200px;
@@ -29,6 +40,7 @@ body {
     display: block;
     margin: 0 auto;
 }
+
 /* Enlarged cover on album page */
 .album-detail-cover {
     width: 400px;
@@ -37,6 +49,7 @@ body {
     display: block;
     margin: 0 auto;
 }
+
 /* Album title: always fixed height (2 lines) with ellipsis */
 .album-title {
     display: -webkit-box;
@@ -45,7 +58,43 @@ body {
     overflow: hidden;
     height: 3em;
 }
+
 /* For cards: hide possible content overflow */
 .card {
     overflow: hidden;
+}
+
+/* Back to top button styles */
+#backToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    display: none;
+    background: linear-gradient(135deg, #007bff, #00aaff);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    transition: transform 0.3s, background 0.3s;
+    outline: none;
+}
+
+#backToTop:hover {
+    background: linear-gradient(135deg, #0056b3, #0088cc);
+    transform: scale(1.1);
+}
+
+/* Preserve newlines in comment text */
+.comment-text {
+    white-space: pre-wrap;
+}
+
+/* Guarantee that the text inside the block with classes "row mb-4" will wrap and will not go beyond the container */
+.row.mb-4 p {
+    word-break: break-word;
+    overflow-wrap: break-word;
 }

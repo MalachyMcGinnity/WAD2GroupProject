@@ -16,7 +16,7 @@
         </div>
         <div class="col-md-8">
           <h2 class="card-title">{{ user_profile.user.username }}</h2>
-          <p class="card-text">{{ user_profile.bio|linebreaksbr }}</p>
+          <p class="card-text">{{ user_profile.bio|default:"This user hasn't provided a description yet."|linebreaksbr }}</p>
           {% if request.user.is_authenticated and request.user.username == user_profile.user.username %}
               <a href="{% url 'album_rater:edit_profile' %}" class="btn btn-outline-primary">Edit Profile</a>
               <a href="{% url 'album_rater:password_change' %}" class="btn btn-outline-secondary">Change Password</a>

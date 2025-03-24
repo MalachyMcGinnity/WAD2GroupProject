@@ -2,7 +2,7 @@
     {% for comment in comments %}
         <div class="card mb-2">
             <div class="card-body">
-                <p class="card-text comment-text">{{ comment.text|linebreaksbr }}</p>
+                <p class="card-text comment-text">{{ comment.text }}</p>
                 {% if comment.rating_value %}
                     <p class="card-text"><small class="text-muted">Rating: {{ comment.rating_value }} / 10</small></p>
                 {% endif %}

@@ -209,34 +209,67 @@ def album(request, album_slug):
                 return JsonResponse({"status": "error", "message": "You cannot comment on your own album."})
             messages.error(request, "You cannot comment on your own album.")
             return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
-        else:
-            form = CommentForm(request.POST)
-            if form.is_valid():
-                comment_text = form.cleaned_data['text']
-                rating_value = form.cleaned_data['rating_value']
-                if user_comment:
-                    user_comment.text = comment_text
-                    user_comment.rating_value = rating_value
-                    user_comment.save()
-                    message = "Comment updated successfully."
-                else:
-                    user_comment = Comment.objects.create(
-                        text=comment_text,
-                        user_profile=current_profile,
-                        album=album_obj,
-                        score=0,
-                        rating_value=rating_value
-                    )
-                    message = "Comment added successfully."
+        # Handling comment deletion
+        if 'delete_comment' in request.POST:
+            if user_comment:
+                user_comment.delete()
+                message = "Comment deleted successfully."
             else:
-                error_msg = ""
-                for field, errors in form.errors.items():
-                    error_msg += f"{field}: {' '.join(errors)} "
-                error_msg = error_msg.strip()
-                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
-                    return JsonResponse({"status": "error", "message": error_msg})
-                messages.error(request, error_msg)
-                return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
+                message = "No comment to delete."
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                comments_list = Comment.objects.filter(album=album_obj)
+                paginator_comments = Paginator(comments_list, 5)
+                page_comments = request.GET.get('page_comments') or 1
+                try:
+                    comments_paginated = paginator_comments.page(page_comments)
+                except PageNotAnInteger:
+                    comments_paginated = paginator_comments.page(1)
+                except EmptyPage:
+                    comments_paginated = paginator_comments.page(paginator_comments.num_pages)
+                rendered_comments = render_to_string('album_rater/_comments_list.html', {'comments': comments_paginated, 'album': album_obj})
+                avg_rating = round(comments_list.aggregate(avg=Avg('rating_value'))['avg'] or 0, 1)
+                return JsonResponse({
+                    "status": "success",
+                    "message": message,
+                    "comments_html": rendered_comments,
+                    "comment_text": "",
+                    "rating_value": "",
+                    "button_text": "Submit Comment",
+                    "button_class": "btn btn-success",
+                    "average_rating": avg_rating,
+                    "show_delete_button": False
+                })
+            messages.success(request, message)
+            return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
+
+        # Processing adding/editing a comment
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment_text = form.cleaned_data['text']
+            rating_value = form.cleaned_data['rating_value']
+            if user_comment:
+                user_comment.text = comment_text
+                user_comment.rating_value = rating_value
+                user_comment.save()
+                message = "Comment updated successfully."
+            else:
+                user_comment = Comment.objects.create(
+                    text=comment_text,
+                    user_profile=current_profile,
+                    album=album_obj,
+                    score=0,
+                    rating_value=rating_value
+                )
+                message = "Comment added successfully."
+        else:
+            error_msg = ""
+            for field, errors in form.errors.items():
+                error_msg += f"{field}: {' '.join(errors)} "
+            error_msg = error_msg.strip()
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({"status": "error", "message": error_msg})
+            messages.error(request, error_msg)
+            return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
 
         if request.headers.get('x-requested-with') == 'XMLHttpRequest':
             comments_list = Comment.objects.filter(album=album_obj)
@@ -249,7 +282,6 @@ def album(request, album_slug):
             except EmptyPage:
                 comments_paginated = paginator_comments.page(paginator_comments.num_pages)
             rendered_comments = render_to_string('album_rater/_comments_list.html', {'comments': comments_paginated, 'album': album_obj})
-            # Calculate the updated average rating value
             avg_rating = round(comments_list.aggregate(avg=Avg('rating_value'))['avg'] or 0, 1)
             return JsonResponse({
                 "status": "success",
@@ -259,7 +291,8 @@ def album(request, album_slug):
                 "rating_value": rating_value,
                 "button_text": "Edit Comment",
                 "button_class": "btn btn-primary",
-                "average_rating": avg_rating
+                "average_rating": avg_rating,
+                "show_delete_button": True
             })
         return redirect(reverse('album_rater:album_detail', args=[album_obj.slug]))
 

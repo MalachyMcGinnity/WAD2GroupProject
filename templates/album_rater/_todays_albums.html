@@ -15,6 +15,8 @@
                   </a>
               </div>
           </div>
+      {% empty %}
+          <p class="text-center">There are no albums yet...</p>
       {% endfor %}
     </div>
     {% if todays_albums.has_other_pages %}
@@ -28,5 +30,4 @@
         {% endif %}
     </div>
     {% endif %}
-  </div>
-  
+</div>
