@@ -52,6 +52,8 @@
     <footer class="text-center py-3">
         <a href="{% url 'album_rater:about' %}">About</a>
     </footer>
+    <!-- Back to Top Button -->
+    <button id="backToTop" title="Back to Top">↑</button>
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JS for "Read more" functionality -->
@@ -62,6 +64,8 @@
     <script src="{% static 'js/ajax_comment.js' %}"></script>
     <!-- Auto Resize and Character Count JS -->
     <script src="{% static 'js/auto_resize.js' %}"></script>
+    <!-- Back to Top JS -->
+    <script src="{% static 'js/back_to_top.js' %}"></script>
     {% block extra_scripts %}{% endblock %}
 </body>
 </html>

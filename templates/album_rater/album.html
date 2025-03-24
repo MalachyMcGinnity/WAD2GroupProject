@@ -23,14 +23,12 @@
     </div>
 </div>
 
-{% if album.description %}
 <div class="row mb-4">
     <div class="col-12">
         <h5>Description:</h5>
-        <p>{{ album.description|linebreaks }}</p>
+        <p>{{ album.description|default:"This album has no description yet."|linebreaks }}</p>
     </div>
 </div>
-{% endif %}
 
 <div class="mb-4">
     <h4>Comments</h4>
@@ -69,9 +67,18 @@
             <textarea class="form-control" name="text" id="text" placeholder="Enter your comment here" maxlength="1500">{% if user_comment %}{{ user_comment.text }}{% endif %}</textarea>
             <small id="charCount" class="form-text text-muted">0/1500 characters</small>
         </div>
-        <button type="submit" class="btn {% if user_comment %}btn-primary{% else %}btn-success{% endif %}">
-            {% if user_comment %}Edit Comment{% else %}Submit Comment{% endif %}
-        </button>
+        {% if user_comment %}
+            <button type="submit" name="submit_comment" class="btn btn-primary">
+                Edit Comment
+            </button>
+            <button type="submit" name="delete_comment" id="deleteCommentButton" class="btn btn-danger">
+                Delete Comment
+            </button>
+        {% else %}
+            <button type="submit" name="submit_comment" class="btn btn-success">
+                Submit Comment
+            </button>
+        {% endif %}
     </form>
 </div>
 {% else %}
