@@ -21,7 +21,13 @@ class Album(models.Model):
         ("metal", "Metal"),
         ("pop", "Pop"),
         ("jazz", "Jazz"),
-        ("rap", "Rap")
+        ("rap", "Rap"),
+        ("folk", "Folk"),
+        ("Disco", "Disco"),
+        ("dance", "Dance"),
+        ("electronic", "Electronic"),
+        ("rnb", "R&B"),
+        ("throat", "Mongolian Throat Singing")
     ]
     title = models.CharField(max_length=MAX_TITLE_LENGTH)
     art = models.ImageField(upload_to="album_covers", blank=True)
