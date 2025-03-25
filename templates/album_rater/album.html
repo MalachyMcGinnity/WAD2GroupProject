@@ -11,7 +11,7 @@
     </div>
     <div class="col-md-8">
         <h2>{{ album.title }}</h2>
-        <p><strong>Uploader:</strong><a href="{% url 'album-rater:user_profile' {{ album.uploader.slug }} %}">{{ album.uploader }}</a></p>
+        <p><strong>Uploader:</strong> <a href="{% url 'album_rater:user_profile' username=album.uploader.user.username %}">{{ album.uploader }}</a></p>
         <p><strong>Upload Date:</strong> {{ album.upload_date }}</p>
         <p><strong>Genre:</strong> {{ album.genre }}</p>
         <p><strong>Views:</strong> {{ album.views }}</p>
