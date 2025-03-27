@@ -422,6 +422,7 @@ def search(request):
         'query': query,
         'sort': sort_option,
         'genre': genre_filter,
+        'genres': Album.GENRES,
     }
     return render(request, 'album_rater/search.html', context)
 

@@ -17,11 +17,9 @@
         <div class="col-md-3">
             <select name="genre" class="form-control">
                 <option value="">All Genres</option>
-                <option value="rock" {% if genre == 'rock' %}selected{% endif %}>Rock</option>
-                <option value="metal" {% if genre == 'metal' %}selected{% endif %}>Metal</option>
-                <option value="pop" {% if genre == 'pop' %}selected{% endif %}>Pop</option>
-                <option value="jazz" {% if genre == 'jazz' %}selected{% endif %}>Jazz</option>
-                <option value="rap" {% if genre == 'rap' %}selected{% endif %}>Rap</option>
+                {% for value, display in genres %}
+                    <option value="{{ value }}" {% if genre == value %}selected{% endif %}>{{ display }}</option>
+                {% endfor %}
             </select>
         </div>
         <div class="col-md-2">
