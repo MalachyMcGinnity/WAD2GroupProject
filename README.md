@@ -51,6 +51,9 @@ Technologies and Frameworks
   
 • **Bootstrap 5:**  
   - Frontend framework for responsive design and prebuilt UI components.
+
+• **Pillow:**  
+  - For processing uploaded images
   
 • **JavaScript & AJAX:**  
   - Custom JS files for asynchronous comment submission (`ajax_comment.js`), AJAX pagination (`ajax_pagination.js`), auto-resizing textareas (`auto_resize.js`), “back to top” functionality (`back_to_top.js`), and “read more” functionality (`readmore.js`).
