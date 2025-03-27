@@ -60,3 +60,41 @@ Technologies and Frameworks
   
 • **HTML & CSS:**  
   - Django templating language combined with custom CSS (`static/css/main.css`) for styling and layout.
+
+## Setup & Installation for Windows
+
+1. **Clone and move to the Repository:**
+
+  `git clone https://github.com/MalachyMcGinnity/WAD2GroupProject.git`
+
+  `cd WAD2GroupProject`
+
+2. **Create and Activate a Virtual Environment:**
+
+  `py -m venv venv`
+
+  `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`
+
+  `venv\Scripts\activate`
+
+3. **Install Dependencies**
+
+  `pip install -r requirements.txt`
+
+4. **Apply Migrations**
+
+  `python manage.py migrate`
+
+5. **Populate the Database with Sample Data**
+
+  `python population_script.py`
+
+6. **Run the Development Server**
+
+  `python manage.py runserver`
+
+7. **Open the Project link**
+
+  Visit http://127.0.0.1:8000/ to see the application in action.
+
+
