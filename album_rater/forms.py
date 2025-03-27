@@ -50,7 +50,8 @@ class CommentForm(forms.ModelForm):
     text = forms.CharField(
         widget=forms.Textarea,
         label="Comment",
-        help_text="Maximum 1500 characters."
+        help_text="Maximum 1500 characters.",
+        error_messages={'required': "Please enter your comment."}
     )
     rating_value = forms.TypedChoiceField(
         choices=[(i, str(i)) for i in range(1, 11)],
@@ -61,7 +62,7 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ("text", "rating_value", )
-        
+
     def clean_text(self):
         text = self.cleaned_data.get('text', '')
         normalized_text = text.replace('\r\n', '\n')
