@@ -316,6 +316,7 @@ def album(request, album_slug):
         'comment_form': CommentForm(initial={'text': user_comment.text if user_comment else '',
                                                'rating_value': user_comment.rating_value if user_comment else ''}),
         'user_comment': user_comment,
+        'genre': album_obj.get_genre_display(),
     }
     response = render(request, 'album_rater/album.html', context)
     if request.user.is_authenticated:

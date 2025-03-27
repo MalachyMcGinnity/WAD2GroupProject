@@ -13,7 +13,7 @@
         <h2>{{ album.title }}</h2>
         <p><strong>Uploader:</strong> <a href="{% url 'album_rater:user_profile' username=album.uploader.user.username %}">{{ album.uploader }}</a></p>
         <p><strong>Upload Date:</strong> {{ album.upload_date }}</p>
-        <p><strong>Genre:</strong> {{ album.genre }}</p>
+        <p><strong>Genre:</strong> {{ genre }}</p>
         <p><strong>Views:</strong> {{ album.views }}</p>
         <p><strong>Average Rating:</strong> <span id="avgRating">{{ average_rating|default:"No ratings yet" }}</span></p>
         {% if request.user.is_authenticated and request.user == album.uploader.user %}
@@ -77,6 +77,9 @@
         {% else %}
             <button type="submit" name="submit_comment" class="btn btn-success">
                 Submit Comment
+            </button>
+            <button type="submit" name="delete_comment" id="deleteCommentButton" class="btn btn-danger" style="display: none;">
+                Delete Comment
             </button>
         {% endif %}
     </form>
